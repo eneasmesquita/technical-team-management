@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog header="Encerrar Solicitação de Serviço" id="dlgEncerrarSs" style="font-size: 12px; width: 100% !important"
+              widgetVar="wgtvar_dlgEncerrarSs" modal="true" resizable="false">
+
+        <h:form id="form_encerrar_ss" prependId="false">
+            <p:outputLabel value="Solicitação de Serviço Nº: " style="font-size: 14px; color: #ff6666; font-weight: bold"/>
+            <p:outputLabel value="#{SolSerCtrl.solser.id}" style="font-size: 14px; font-weight: bold"/>
+            <p:panel id="pnlSolServicoEncerrar" style="background: top" rendered="#{SolSerCtrl.exibe_painel_edit_ss}">
+                <p:commandButton icon="ui-icon-script" value="Histórico (#{SolSerCtrl.historicoSituacao.size()})" action="#{SolSerCtrl.atualizarHistorico()}"
+                                 update=":dtHistAltSs"
+                                 style="float: right" oncomplete="wgtvar_dlgHistAltSs.show();"/>
+                <h:panelGrid columns="8">
+                    <p:outputLabel value="Data Abertura: " style="font-weight: bold"/>
+                    <h:outputLabel value="#{SolSerCtrl.solser.dataAbertura}" style="width: 115px">
+                        <f:convertDateTime pattern="dd/MM/yyyy - HH:mm:ss"/>
+                    </h:outputLabel>
+
+                    <p:outputLabel value="Data Fechamento: " style="font-weight: bold"/>
+                    <h:outputLabel value="#{SolSerCtrl.solser.dataFechamento}" style="width: 115px">
+                        <f:convertDateTime pattern="dd/MM/yyyy - HH:mm:ss"/>
+                    </h:outputLabel>
+                    <p:outputLabel value="Responsável Abertura SS: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{SolSerCtrl.solser.responsavel}" style="width: 220px"/>
+                    <p:outputLabel value="Local Abertura SS: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{SolSerCtrl.solser.localSolicitacao}" style="width: 220px"/>
+                </h:panelGrid>
+                <h:panelGrid columns="8">
+                    <p:outputLabel value="Prioridade: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{SolSerCtrl.solser.prioridade.id}"/>
+                    <p:outputLabel value="Situação Atual: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{SolSerCtrl.solser.situacao}"/>
+
+                    <p:outputLabel value="Observação: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{SolSerCtrl.solser.observacao}"/>
+                    <p:outputLabel value="Parecer Técnico: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{SolSerCtrl.solser.parecerTecnico}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Colaborador Responsável Abertura SS: " style="font-weight: bold"/>
+                    <p:outputLabel style="width: 350px" value="#{SolSerCtrl.solser.responsavel}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="4">
+                    <p:outputLabel value="Solicitação de Serviço Encerrada: " style="font-weight: bold"/>
+                    <p:selectBooleanCheckbox value="#{SolSerCtrl.solser.encerrada}" >
+                        <p:ajax listener="#{SolSerCtrl.alterarEncerramento()}" update="@form"/>
+                    </p:selectBooleanCheckbox>
+                    <p:outputLabel id="opl_exibeLabelSituacao" value="Situação: " style="font-weight: bold" rendered="#{SolSerCtrl.solser.encerrada}"/>
+                    <p:selectOneMenu id="som_listaSituacaoEncerrar" value="#{SolSerCtrl.solser.situacao}" rendered="#{SolSerCtrl.solser.encerrada}">
+                        <f:selectItem itemLabel="SELECIONE SITUAÇÃO" itemValue=" "/>
+                        <f:selectItem itemLabel="ENCERRADA COM SERVIÇO EFETUADO" itemValue="ENCERRADA COM SERVIÇO EFETUADO"/>
+                        <f:selectItem itemLabel="ENCERRADA SEM SERVIÇO" itemValue="ENCERRADA SEM SERVIÇO"/>
+                        <f:selectItem itemLabel="ENCERRADA COM SUBSTITUIÇÃO EFETUADA" itemValue="ENCERRADA COM SUBSTITUIÇÃO EFETUADA"/>
+                        <f:selectItem itemLabel="ENCERRADA EQUIPAMENTO CONDENADO" itemValue="ENCERRADA EQUIPAMENTO CONDENADO"/>
+                        <p:ajax listener="#{SolSerCtrl.alterarSituacao()}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+
+        </h:form>
+
+        <!-- CONJUNTO DE PAINEIS ABAIXO -->
+
+        <center>
+
+            <h:panelGrid columns="2">
+                <h:column>
+                    <h:form id="form_dtEquipamentoEncerraSs" prependId="false">
+                        <p:dataTable id="dtEquipamentoEncerraSs" paginator="true" paginatorPosition="bottom"
+                                     rendered="#{SolSerCtrl.exibe_painel_edit_ss}"
+                                     rows="1" emptyMessage="Nenhum Equipamento Cadastrado." 
+                                     value="#{SolSerCtrl.equipamentosAddSs}" var="equipamento" rowIndexVar="idx" 
+                                     rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}" style="font-size: 10px">
+                            <f:facet name="header">
+                                <h:outputLabel value="Equipamentos Vinculados à SS" style="font-weight: bold; color:#0078AE;"/>
+                            </f:facet>
+                            <p:column style="width:2%">  
+                                <p:rowToggler />  
+                            </p:column>
+                            <p:column width="10">
+                                #{idx+1}
+                            </p:column>
+                            <p:column headerText="Código" style="text-align: center">
+                                #{equipamento.id}
+                            </p:column>
+                            <p:column headerText="Descrição" style="max-width: 250px; white-space: normal" >
+                                #{equipamento.descricao}
+                            </p:column>
+                            <p:column headerText="Tipo" style="max-width: 250px; white-space: normal" >
+                                #{equipamento.tipoEquipamento.descricao}
+                            </p:column>
+                            <p:column headerText="Marca" >
+                                #{equipamento.marca.descricao}
+                            </p:column>
+                            <p:column headerText="Localidade" style="max-width: 300px; white-space: normal">
+                                #{equipamento.localidade.setor.setorNome} - #{equipamento.localidade.municipio.descricao}
+                            </p:column>
+                            <p:column headerText="Local Operação" style="max-width: 180px; white-space: normal">
+                                #{equipamento.localOperacao.descricao}
+                            </p:column>
+                            <p:column headerText="Local Operação Técnica" style="width: 130px">
+                                #{equipamento.localOperacaoTecnica.descricao}
+                            </p:column>                         
+                            <p:column headerText="Local Instalação">
+                                <h:outputLabel rendered="#{!empty equipamento.localInstalacao.descricao}" value="#{equipamento.localInstalacao.descricao}"/>
+                                <h:outputLabel rendered="#{empty equipamento.localInstalacao.descricao}" value="-----"/>
+                            </p:column>
+                            <p:column headerText="Tombamento" style="text-align: center; width: 100px">
+                                #{equipamento.tombamento}
+                            </p:column>
+                            <p:rowExpansion>
+                                <center>
+                                    <h:panelGrid  columns="2" cellpadding="10" style="width:450px; text-align: center"  
+                                                  styleClass=" ui-widget-content grid">
+                                        <h:outputText value="Ativo" style="font-weight: bold; color:#0078AE;"/>  
+                                        <h:outputText value="Data Inativo" style="font-weight: bold; color:#0078AE;"/>  
+                                        <p:graphicImage library="images" name="check.png" rendered="#{equipamento.ativo}" height="16" width="16"/>
+                                        <p:graphicImage library="images" name="disabled.png" rendered="#{!equipamento.ativo}" height="16" width="16"/>
+                                        <h:outputLabel value="#{equipamento.dataInativo}" rendered="#{!empty equipamento.dataInativo}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputLabel>
+                                        <h:outputLabel rendered="#{empty equipamento.dataInativo}" value="-----"/>
+                                    </h:panelGrid>
+                                </center>
+                            </p:rowExpansion>
+                        </p:dataTable>
+                    </h:form>
+                </h:column>
+                <h:column>
+                    <h:form id="form_equipesJoinEncerrarSs">
+
+                        <p:dataTable id="dtEquipesJoinEncerrarSs" emptyMessage="Nenhuma Equipe Cadastrada" rows="1" 
+                                     value="#{SolSerCtrl.equipesAddSs}" var="equipe" 
+                                     paginator="true" paginatorPosition="bottom" rowIndexVar="idx"
+                                     rendered="#{SolSerCtrl.exibe_painel_edit_ss}" style="font-size: 10px"
+                                     rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                            <f:facet name="header">
+                                <h:outputLabel value="Equipe(s) Vinculada(s) à SS" style="font-weight: bold; color:#0078AE;"/>
+                            </f:facet>
+                            <p:column>
+                                <p:rowToggler/>
+                            </p:column>
+                            <p:column>
+                                #{idx+1}
+                            </p:column>
+                            <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                                #{equipe.id}
+                            </p:column>
+                            <p:column headerText="Descrição">
+                                #{equipe.descricao}
+                            </p:column>
+                            <p:column>
+                                <p:commandButton icon="ui-icon-trash" update="@form :growl_SS" action="#{SolSerCtrl.descarregarEquipeSs()}"
+                                                 style="background: top; border-style: hidden;">
+                                    <f:setPropertyActionListener value="#{equipe}" target="#{SolSerCtrl.equipeDescartada}"/>
+                                </p:commandButton>
+                            </p:column>
+                            <p:rowExpansion>
+                                <p:dataTable id="dtMembrosEquipeJoinEncerrar" value="#{equipe.equipeMembrosCollection}" var="membro" 
+                                             emptyMessage="Nenhum Colaborador Vinculado." rowIndexVar="idx" 
+                                             rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                                    <f:facet name="header">
+                                        <h:outputLabel value="Membros" style="font-weight: bold; color:#0078AE; font-size: 12px"/>
+                                    </f:facet>
+                                    <p:column>
+                                        #{idx+1}
+                                    </p:column>
+                                    <p:column headerText="Matrícula">
+                                        #{membro.matricula}
+                                    </p:column>
+                                    <p:column headerText="Nome">
+                                        #{membro.nome}
+                                    </p:column>
+                                    <p:column headerText="Data de Vínculo">
+                                        <h:outputLabel value="#{membro.dataParticipacao}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy - HH:mm:ss"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:rowExpansion>
+                        </p:dataTable>
+
+                    </h:form>
+
+                    <h:form id="form_servicosJoinEncerrarSs">
+
+                        <p:dataTable id="dtServicoJoinEncerrarSs" paginator="true" rows="1" emptyMessage="Nenhum Serviço Encontrado." 
+                                     paginatorPosition="bottom" value="#{SolSerCtrl.servicosAddSs}" var="service" rowIndexVar="idx"
+                                     rendered="#{SolSerCtrl.exibe_painel_edit_ss}" style="font-size: 10px"
+                                     rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                            <f:facet name="header">
+                                <h:outputLabel value="Serviços Vinculados à SS" style="font-weight: bold; color:#0078AE;"/>
+                            </f:facet>
+                            <p:column >
+                                #{idx+1}
+                            </p:column>
+                            <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                                #{service.id}
+                            </p:column>
+                            <p:column headerText="Serviço">
+                                #{service.descricaoServico}
+                            </p:column>
+                            <p:column>
+                                <p:commandButton icon="ui-icon-trash" update="@form :growl_SS" action="#{SolSerCtrl.descarregarServicosSs()}"
+                                                 style="background: top; border-style: hidden">
+                                    <f:setPropertyActionListener value="#{service}" target="#{SolSerCtrl.servicoDescartado}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:form>
+                </h:column>
+            </h:panelGrid>
+
+        </center>
+
+        <br/>
+
+        <h:form id="form_ButtonEncerrarSs" prependId="false">
+
+            <p:panel id="pnlButtonEncerrarSs" rendered="#{SolSerCtrl.exibe_painel_edit_ss}">
+                <center>
+                    <p:commandButton icon="ui-icon-check" value="Encerrar SS" action="#{SolSerCtrl.encerrarSS()}" oncomplete="wgtvar_dlgEncerrarSs.hide();"
+                                     update=":form_encerrar_ss :form_ButtonEncerrarSs :form_dtEquipamentoEncerraSs :form_dtEquipamentoEncerraSs:dtEquipamentoEncerraSs 
+                                     :form_equipesJoinEncerrarSs :form_servicosJoinEncerrarSs :growl_SS :form_list_sol_servico :form_list_sol_servico:dtSolServico"/>
+                </center>
+            </p:panel>
+
+        </h:form>
+
+    </p:dialog>
+
+</html>
+

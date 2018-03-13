@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p='http://primefaces.org/ui'
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog id="pnlEquipes" widgetVar="wgtvar_pnlEquipes" header="ADMINISTRAÇÃO DE EQUIPES" 
+              resizable="false" modal="true" width="700">
+
+        <h:form id="form_equipes_option" prependId="false">
+
+            <div style="width: 550px">
+
+                <p:commandLink action="#{EquipeCtrl.exibirPainelCadEquipe()}" update=":form_equipesAdd :form_dtEquipesAdd :form_equipesJoin :form_dtEquipesJoin">
+                    <h:graphicImage id="giWorkersAdd" name="workers_128.png" style="margin-left: 175px" library="images" height="72" width="72"/>
+                </p:commandLink>
+
+                <p:commandLink action="#{EquipeCtrl.exibirPainelEquipeJoin()}" update=":form_equipesJoin :form_dtEquipesJoin :form_equipesAdd :form_dtEquipesAdd">
+                    <h:graphicImage id="giStaff" name="staff.png" style="margin-left: 140px"
+                                    library="images" height="72" width="82"/><br/>
+                </p:commandLink>
+
+                <p:outputLabel value="Cadastrar Equipe" style="font-weight: bold; color: #0078AE; margin-left: 155px"/>
+                <p:outputLabel value="Vincular Colaborador a uma Equipe" style="font-weight: bold; color: #0078AE; margin-left: 55px"/>
+            </div>
+        </h:form>
+
+        <h:form id="form_equipesAdd" prependId="false">
+
+            <p:panel id="pnlEquipesAdd" rendered="#{EquipeCtrl.exibe_pnlEquipesAdd}">
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="Descrição da Equipe: "/>
+                    <p:inputText value="#{EquipeCtrl.equipe_inserir.descricao}" style="text-transform: uppercase; width: 250px"/>
+                    <p:commandButton value="Cadastrar" icon="ui-icon-plusthick" action="#{EquipeCtrl.adicionarEquipe()}" 
+                                     update="@form :form_dtEquipesAdd :form_dtEquipesAdd:dtEquipesAdd :growl_admin"/>
+                </h:panelGrid>
+            </p:panel>
+
+        </h:form>
+
+        <h:form id="form_dtEquipesAdd" prependId="false">
+
+            <p:panel id="pnl_dtEquipesAdd" rendered="#{EquipeCtrl.exibe_pnlEquipesAdd}">
+                <br/>
+                <p:dataTable id="dtEquipesAdd" emptyMessage="Nenhuma Equipe Cadastrada" rows="10" value="#{EquipeCtrl.equipes}" var="equipe"
+                             rowsPerPageTemplate="10,15,20" paginator="true" paginatorPosition="bottom" rowIndexVar="idx"
+                             rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                    <p:column>
+                        #{idx+1}
+                    </p:column>
+                    <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                        #{equipe.id}
+                    </p:column>
+                    <p:column headerText="Descrição" filterBy="#{equipe.descricao}" 
+                              filterMatchMode="contains">
+                        #{equipe.descricao}
+                    </p:column>
+                    <p:column>
+                        <p:commandButton icon="ui-icon-trash" update="@form :growl_admin" action="#{EquipeCtrl.excluirEquipe()}"
+                                         style="background: top; border-style: hidden">
+                            <f:setPropertyActionListener value="#{equipe}" target="#{EquipeCtrl.equipe}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+
+        <h:form id="form_equipesJoin" prependId="false">
+
+            <p:panel id="pnlEquipesJoin" rendered="#{EquipeCtrl.exibe_pnlEquipesJoin}">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Colaborador: "/>
+                    <p:selectOneMenu value="#{EquipeCtrl.paramUsuario}" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="SELECIONE COLABORADOR" itemValue="0"/>
+                        <f:selectItems value="#{EquipeCtrl.usuarios}" var="colaborador" 
+                                       itemLabel="#{colaborador.nomeCompleto} - MATRÍCULA: #{colaborador.matricula}" itemValue="#{colaborador.matricula}"/>
+                        <p:ajax listener="#{EquipeCtrl.carregaDadosColaborador()}" update=":growl_admin"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="Equipe: "/>
+                    <p:selectOneMenu value="#{EquipeCtrl.paramEquipe}" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="SELECIONE EQUIPE" itemValue=" "/>
+                        <f:selectItems value="#{EquipeCtrl.equipes}" var="equipe" itemLabel="#{equipe.descricao}" itemValue="#{equipe.id}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Vincular" icon="ui-icon-plusthick" 
+                                     update="@form :form_dtEquipesJoin :form_dtEquipesJoin:dtEquipesJoin 
+                                     :form_dtEquipesJoin:dtEquipesJoin:dtMembrosEquipeJoin :growl_admin" 
+                                     action="#{EquipeCtrl.adicionarMembroEquipe()}"/>
+                </h:panelGrid>
+            </p:panel>
+
+        </h:form>
+
+        <h:form id="form_dtEquipesJoin" prependId="false">
+
+            <p:panel id="pnl_dtEquipesJoin" rendered="#{EquipeCtrl.exibe_pnlEquipesJoin}">
+                <p:dataTable id="dtEquipesJoin" emptyMessage="Nenhuma Equipe Cadastrada" rows="10" value="#{EquipeCtrl.equipes}" var="equipe"
+                             rowsPerPageTemplate="10,15,20" paginator="true" paginatorPosition="bottom" rowIndexVar="idx"
+                             rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                    <p:column>
+                        <p:rowToggler/>
+                    </p:column>
+                    <p:column>
+                        #{idx+1}
+                    </p:column>
+                    <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                        #{equipe.id}
+                    </p:column>
+                    <p:column headerText="Descrição">
+                        #{equipe.descricao}
+                    </p:column>
+                    <p:rowExpansion>
+                        <p:dataTable id="dtMembrosEquipeJoin" value="#{equipe.equipeMembrosCollection}" var="membro" 
+                                     emptyMessage="Nenhum Colaborador Vinculado." rowIndexVar="idx" 
+                                     rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                            <f:facet name="header">
+                                <h:outputLabel value="Membros" style="font-weight: bold; color:#0078AE; font-size: 12px"/>
+                            </f:facet>
+                            <p:column>
+                                #{idx+1}
+                            </p:column>
+                            <p:column headerText="Matrícula">
+                                #{membro.matricula}
+                            </p:column>
+                            <p:column headerText="Nome">
+                                #{membro.nome}
+                            </p:column>
+                            <p:column headerText="Data de Vínculo">
+                                <h:outputLabel value="#{membro.dataParticipacao}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm:ss"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton icon="ui-icon-trash" update="@form :growl_admin" action="#{EquipeCtrl.excluirMembroEquipe()}"
+                                                 style="background: top; border-style: hidden">
+                                    <f:setPropertyActionListener value="#{membro}" target="#{EquipeCtrl.equipe_membros}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:rowExpansion>
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+
+    </p:dialog>
+
+
+
+</html>
+

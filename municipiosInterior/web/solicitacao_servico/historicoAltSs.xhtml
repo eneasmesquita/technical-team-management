@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog id="dlgHistAltSs" widgetVar="wgtvar_dlgHistAltSs" modal="true" resizable="false"
+              header="Histórico de Alteração da Solicitação de Serviço" >
+
+        <p:dataTable id="dtHistAltSs" widgetVar="wgtvar_dtHistAltSs" value="#{SolSerCtrl.historicoSituacao}" var="hs"
+                     rowIndexVar="idx" rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}" 
+                     emptyMessage="Nenhum Registro Encontrado." rows="10" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+            <p:column>
+                #{idx+1}
+            </p:column>
+            <p:column headerText="Situação">
+                #{hs.situacao}
+            </p:column>
+            <p:column headerText="Data Alteração">
+                <h:outputLabel value="#{hs.dataAlteracao}">
+                    <f:convertDateTime pattern="dd/MM/yyyy - HH:mm:ss"/>
+                </h:outputLabel>
+            </p:column>
+            <p:column headerText="Responsável Alteração">
+                #{hs.colaboradorAlterador}
+            </p:column>
+        </p:dataTable> 
+
+    </p:dialog>
+
+</html>
+

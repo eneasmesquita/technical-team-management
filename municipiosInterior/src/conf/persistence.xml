@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="municipiosInteriorPU" transaction-type="RESOURCE_LOCAL">
+    <jta-data-source>153</jta-data-source>
+    <class>login.entity.Setor</class>
+    <class>login.entity.SetorTipo</class>
+    <class>login.entity.UsuarioJpa</class>
+    <class>entities.Equipamento</class>
+    <class>entities.Equipe</class>
+    <class>entities.EquipeMembros</class>
+    <class>entities.HistoricoSituacao</class>
+    <class>entities.LocalInstalacao</class>
+    <class>entities.LocalOperacao</class>
+    <class>entities.LocalOperacaoTecnica</class>
+    <class>entities.Localidade</class>
+    <class>entities.Marca</class>
+    <class>entities.Municipio</class>
+    <class>entities.Prioridade</class>
+    <class>entities.Servico</class>
+    <class>entities.Situacao</class>
+    <class>entities.SolicitacaoServico</class>
+    <class>entities.TipoEquipamento</class>
+    <class>entities.ServicoSs</class>
+    <class>entities.TiposEquipamentos</class>
+    <class>entities.EquipamentoSs</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <validation-mode>NONE</validation-mode>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.databaseName" value="caer"/>
+      <property name="javax.persistence.jdbc.portNumber" value="5432"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/caer"/>
+      <property name="javax.persistence.jdbc.user" value="postgres"/>
+      <property name="javax.persistence.jdbc.password" value="548981"/>
+    </properties>
+  </persistence-unit>
+</persistence>

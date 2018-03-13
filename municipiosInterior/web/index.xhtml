@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <f:view contentType="text/html">
+
+        <h:head>
+            <title>GTI</title>
+            <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+            <link type="text/css" rel="stylesheet" href="resources/css/estilo_levantamentoInterior.css"/>
+            <h:outputScript library="js" name="jquery-1.7.2.min.js" target="head"/>
+            <h:outputScript library="js" name="javascript.js" target="head"/>
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+            <meta http-equiv="refresh" content="0"/>
+            <meta http-equiv="Pragma" content="no-cache"/>
+            <meta http-equiv="Expires" content="0"/>
+
+            <style type="text/css">
+                .imprimir{
+                    background-image: url('resources/images/printer_48.png') !important;
+                    background-repeat: no-repeat !important;
+                    height: 50px;
+                    width: 50px;
+                    background: top;
+                    border: hidden;  
+                }
+            </style>
+
+        </h:head>
+
+        <h:body style="font-size: 12px">
+
+            <div class="div_principal">
+                
+                <p:panel id="pnl_opcao" visible="true" style="height: 230px">
+
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <h:panelGrid columns="6">
+                                <p:outputLabel value="Usuário: "/>
+                                <p:outputLabel value="#{sessionScope.nome}" style="text-transform: uppercase"/>
+                                <p:outputLabel value="Local: "/>
+                                <p:outputLabel value="#{sessionScope.setor}" style="text-transform: uppercase"/>
+                                <p:spacer width="10"/>
+                                <p:commandButton icon="ui-icon-power" title="Sair" action="#{LoginController.logout()}"/>
+                            </h:panelGrid>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br/>
+
+                    <h:form id="form_link_option" prependId="false">
+
+                        <p:commandLink action="solicitacao_servico/tela_principal_sol_servico.xhtml?faces-redirect=true" ajax="false">
+                            <h:graphicImage id="giTool_option" name="tool_128.png" library="images" style="margin-left: 250px" height="105" width="95"/>
+                        </p:commandLink>
+
+
+                        <p:commandLink action="equipamentos/tela_principal_equipamento.xhtml?faces-redirect=true" ajax="false">
+                            <p:graphicImage id="giPipe_option" name="pipe_128.png" library="images" style="margin-left: 95px" height="105" width="95"/>
+                        </p:commandLink>
+                        
+                        <p:commandLink action="admin/tela_administracao.xhtml?faces-redirect=true" ajax="false" 
+                                       rendered="#{sessionScope.municipio eq 'BOA VISTA'}">
+                            <p:graphicImage id="giAdmin" name="adminsis.png" library="images" style="margin-left: 95px" height="85" width="85"/>
+                        </p:commandLink>
+
+                    </h:form>
+
+                    <br/>
+                    <p:outputLabel value="SOLICITAÇÃO DE SERVIÇO" style="margin-left: 200px; font-weight: bold; color: #0078AE"/>
+
+                    <p:outputLabel value="EQUIPAMENTOS" style="margin-left: 65px; margin-bottom: 15px; font-weight: bold; color: #0078AE"/>
+                    
+                    <p:outputLabel value="ADMINISTRAÇÃO" style="margin-left: 75px; margin-bottom: 15px; font-weight: bold; color: #0078AE" 
+                                   rendered="#{sessionScope.municipio eq 'BOA VISTA'}"/>
+
+                    <br/>
+
+                </p:panel>
+
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+            <div id="bottom">
+                <h:panelGroup layout="block" id="bottom-conteudo">
+                    <h:panelGroup layout="block" id="endereco">
+                        <h3>Gerência de Tecnologia da Informação - GTI</h3>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>
+
+            <br />
+        </h:body>
+    </f:view>
+
+</html>
+

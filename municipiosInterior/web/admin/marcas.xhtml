@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p='http://primefaces.org/ui'
+      xmlns:f="http://java.sun.com/jsf/core">
+
+        <p:dialog id="dlgMarcas" widgetVar="wgtvar_dlgMarcas" header="ADMINISTRAÇÃO DE MARCAS DE EQUIPAMENTOS"
+                  resizable="false" modal="true">
+            
+            <h:form id="form_marcas" prependId="false">
+            <h:panelGrid columns="3">
+                <p:outputLabel value="Descrição: "/>
+                <p:inputText value="#{MarcaCtrl.marca_inserir.descricao}" style="text-transform: uppercase; width: 250px"/>
+                <p:commandButton value="Gravar" icon="ui-icon-plusthick" 
+                                 action="#{MarcaCtrl.adicionar()}" update="@form :form_listagem_marcas :form_listagem_marcas:dtMarcas :growl_admin"/>
+            </h:panelGrid>
+            <br/>
+            </h:form>
+            
+            <h:form id="form_listagem_marcas" prependId="false">
+                
+            <p:dataTable id="dtMarcas" paginator="true" rows="10" rowsPerPageTemplate="10,15,20" emptyMessage="Nenhuma Marca Registrada." 
+                         paginatorPosition="bottom" value="#{MarcaCtrl.marcas}" var="marca" rowIndexVar="idx"
+                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                <p:column >
+                    #{idx+1}
+                </p:column>
+                <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                    #{marca.id}
+                </p:column>
+                <p:column headerText="Marca" filterBy="#{marca.descricao}" filterMatchMode="startsWith">
+                    #{marca.descricao}
+                </p:column>
+                <p:column>
+                    <p:commandButton icon="ui-icon-trash" update="@form :growl_admin" action="#{MarcaCtrl.excluir()}"
+                                     style="background: top; border-style: hidden">
+                        <f:setPropertyActionListener value="#{marca}" target="#{MarcaCtrl.marca}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            
+            </h:form>
+            
+        </p:dialog>
+
+    
+
+</html>
+

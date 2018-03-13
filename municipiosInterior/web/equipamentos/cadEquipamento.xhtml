@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog id="dlgCadEquipamento" widgetVar="wgtvar_dlgCadEquipamento" header="Cadastro de Equipamento"
+              modal="true" visible="false" resizable="false">
+        <br/>
+        <h:form id="form_cad_eq" prependId="false">
+            <h:panelGrid columns="6">
+                <p:outputLabel value="Tipo Equipamento: "/>
+                <p:selectOneMenu required="true" value="#{EquipamentoCtrl.tipoEquipamentoId}" filter="true" filterMatchMode="startsWith"
+                                 requiredMessage="Informe o Tipo do Equipamento.">
+                    <f:selectItem itemLabel="SELECIONE TIPO EQUIPAMENTO" itemValue=" "/>
+                    <f:selectItems value="#{EquipamentoCtrl.tipoEquipamento}" var="tiposEquipamentos" 
+                                   itemLabel="#{tiposEquipamentos.descricao}" itemValue="#{tiposEquipamentos.id}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Marca: "/>
+                <p:selectOneMenu required="true" value="#{EquipamentoCtrl.marcaId}" filter="true" filterMatchMode="startsWith"
+                                 requiredMessage="Informe a Marca do Equipamento.">
+                    <f:selectItem itemLabel="SELECIONE A MARCA" itemValue="0"/>
+                    <f:selectItems value="#{EquipamentoCtrl.marca}" var="marca" itemValue="#{marca.id}" itemLabel="#{marca.descricao}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Tombamento: "/>
+                <p:inputText style="width: 45px;" maxlength="6" value="#{EquipamentoCtrl.equipamento_inserir.tombamento}" converterMessage="Apenas números são permitidos para o campo [Tombamento]">
+                    <f:validateRegex pattern="[0-9]*" />
+                </p:inputText>
+            </h:panelGrid>
+            <h:panelGrid columns="2">
+                <p:outputLabel value="Descrição: "/>
+                <p:inputText style="width: 400px; text-transform: uppercase" value="#{EquipamentoCtrl.equipamento_inserir.descricao}" required="true" 
+                             requiredMessage="Informe a Descrição do Equipamento."/>
+                <!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+                <!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->                
+                <p:outputLabel value="Local de Operação: "/>
+                <p:selectOneMenu value="#{EquipamentoCtrl.localOperacaoId}" required="true" 
+                                 requiredMessage="Informe o Local de Operação do Equipamento.">
+                    <f:selectItem itemLabel="SELECIONE LOCAL DE OPERAÇÃO" itemValue="0"/>
+                    <f:selectItems value="#{EquipamentoCtrl.localOperacao}" var="localOperacao" 
+                                   itemLabel="#{localOperacao.descricao}" itemValue="#{localOperacao.id}"/>
+                    <p:ajax event="change" listener="#{EquipamentoCtrl.exibeLocalOpeTec(e)}" 
+                            update="form_cad_eq:pnl_opcoes_cad_eq form_cad_eq:pnl_cad_eq_botoes form_cad_eq:pnl_opcoes_eq_li form_cad_eq:pnl_cad_localidade"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <p:panel id="pnl_opcoes_cad_eq" style="background: top; border: hidden" 
+                     visible="#{EquipamentoCtrl.exibe_som_eq_lto}">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Local de Operação Técnica: "/>
+                    <p:selectOneMenu id="som_eq_lto_captacao" value="#{EquipamentoCtrl.localOperacaoTecnicaId}" required="true" 
+                                     requiredMessage="Informe o Local de Operação Técnica do Equipamento.">
+                        <f:selectItem itemLabel="SELECIONE LOCALIDADE TÉCNICA OPERACIONAL" itemValue="0"/>
+                        <f:selectItems value="#{EquipamentoCtrl.getLocalOperacaoTecnica()}" var="lotecnicas" itemLabel="#{lotecnicas.descricao}" itemValue="#{lotecnicas.id}"/>
+                        <p:ajax event="change" listener="#{EquipamentoCtrl.exibeLocalInsta(e)}" 
+                                update="form_cad_eq:pnl_opcoes_cad_eq form_cad_eq:pnl_cad_eq_botoes form_cad_eq:pnl_opcoes_eq_li"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="pnl_opcoes_eq_li" style="background: top; border: hidden" visible="#{EquipamentoCtrl.exibe_pnlGrid_eq_li}">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Local de Instalação: "/>
+                    <p:selectOneMenu id="som_eq_li" value="#{EquipamentoCtrl.localInstalacaoId}" required="true" 
+                                     requiredMessage="Informe o Local de Instalação do Equipamento.">
+                        <f:selectItem itemLabel="SELECIONE LOCAL DE INSTALAÇÃO" itemValue="0"/>
+                        <f:selectItems value="#{EquipamentoCtrl.localInstalacao}" var="locaisInstalacao" 
+                                       itemLabel="#{locaisInstalacao.descricao}" itemValue="#{locaisInstalacao.id}"/>
+                        <!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+                        <!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&-->
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="pnl_cad_localidade" style="background: top; border: hidden" visible="#{EquipamentoCtrl.exibe_som_eq_lto}">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Localidade: "/>
+                    <p:selectOneMenu value="#{EquipamentoCtrl.localidadeId}" filter="true" filterMatchMode="startsWith"
+                                     required="true" requiredMessage="Informe a Localidade do Equipamento">
+                        <f:selectItem itemLabel="SELECIONE A LOCALIDADE" itemValue="0"/>
+                        <f:selectItems value="#{EquipamentoCtrl.localidade}" var="localidade" 
+                                       itemValue="#{localidade.id}" itemLabel="#{localidade.setor.setorNome} - #{localidade.municipio.descricao}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </p:panel>
+            <p:panel id="pnl_cad_eq_botoes" style="background: top; border: hidden"  
+                     visible="#{EquipamentoCtrl.exibe_som_eq_lto}">
+                <center>
+                    <p:commandButton value="Cadastrar" update="@form :form_list_equipamento:dtEquipamento :growl_eq" action="#{EquipamentoCtrl.adicionar()}"/>
+                </center>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+
+</html>
+

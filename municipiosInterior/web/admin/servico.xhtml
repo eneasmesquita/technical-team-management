@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p='http://primefaces.org/ui'
+      xmlns:f="http://java.sun.com/jsf/core">
+
+        <p:dialog id="pnlServico" widgetVar="wgtvar_dlgServico" header="ADMINISTRAÇÃO DE SERVIÇOS"
+                  resizable="false" modal="true">
+            
+            <h:form id="form_servico" prependId="false">
+            <h:panelGrid columns="3">
+                <p:outputLabel value="Descrição: "/>
+                <p:inputText value="#{ServicoCtrl.servico_inserir.descricaoServico}" style="text-transform: uppercase; width: 250px"/>
+                <p:commandButton value="Gravar" icon="ui-icon-plusthick" 
+                                 action="#{ServicoCtrl.adicionar()}" update="@form :form_listagem_servico :form_listagem_servico:dtServico :growl_admin"/>
+            </h:panelGrid>
+            <br/>
+            </h:form>
+            
+            <h:form id="form_listagem_servico" prependId="false">
+                
+            <p:dataTable id="dtServico" paginator="true" rows="10" rowsPerPageTemplate="10,15,20" emptyMessage="Nenhum Serviço Encontrado." 
+                         paginatorPosition="bottom" value="#{ServicoCtrl.servicos}" var="service" rowIndexVar="idx"
+                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                <p:column >
+                    #{idx+1}
+                </p:column>
+                <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                    #{service.id}
+                </p:column>
+                <p:column headerText="Serviço" filterBy="#{service.descricaoServico}" filterMatchMode="startsWith">
+                    #{service.descricaoServico}
+                </p:column>
+                <p:column>
+                    <p:commandButton icon="ui-icon-trash" update="@form :growl_admin" action="#{ServicoCtrl.excluir()}"
+                                     style="background: top; border-style: hidden">
+                        <f:setPropertyActionListener value="#{service}" target="#{ServicoCtrl.servico}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            
+            </h:form>
+            
+        </p:dialog>
+
+    
+
+</html>
+

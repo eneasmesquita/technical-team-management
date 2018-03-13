@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog header="Histórico de Poço" id="dlgHistPoco" widgetVar="wgtvar_dlgHistPoco" 
+              modal="true" visible="false" resizable="false">
+
+        <h:form id="form_historic_poco_search" prependId="false">
+            <br/>
+            <p:toolbar id="toolBar">
+                <p:toolbarGroup align="left">
+
+                    <h:panelGrid columns="4" style="padding-top: 10px">
+                        <p:outputLabel value="Localidade: "/>
+                        <p:selectOneMenu value="#{EquipamentoCtrl.param_localidade_id_hist_poco}" required="true" filter="true" filterMatchMode="startsWith">
+                            <f:selectItem itemLabel="SELECIONE O MUNICÍPIO" itemValue=" "/>
+                            <f:selectItems value="#{EquipamentoCtrl.localidadeFiltro}" var="localidade" 
+                                           itemValue="#{localidade.id}" itemLabel="#{localidade.setor.setorNome} - #{localidade.municipio.descricao}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Poço: "/>
+                        <p:selectOneMenu value="#{EquipamentoCtrl.param_poco_hist_poco}" required="true" 
+                                         requiredMessage="Informe o Local de Instalação do Equipamento.">
+                            <f:selectItem itemLabel="SELECIONE LOCAL DE INSTALAÇÃO" itemValue="0"/>
+                            <f:selectItems value="#{EquipamentoCtrl.pocos}" var="localInstalacao" 
+                                           itemLabel="#{localInstalacao.descricao}" itemValue="#{localInstalacao.id}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:toolbarGroup>
+
+                <p:toolbarGroup align="right">
+                    <h:panelGrid columns="2">
+                    <p:commandButton icon="ui-icon-refresh" update=":form_historic_poco:dtHistPoco"/>
+                    <p:commandButton value=" " styleClass="imprimir" title="Imprimir Histórico do Equipamento" ajax="false">
+                        <p:printer target=":form_historic_poco:dtHistPoco"/>
+                    </p:commandButton>
+                    </h:panelGrid>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </h:form>
+
+        <h:form id="form_historic_poco" prependId="false">
+
+            <p:dataTable id="dtHistPoco" widgetVar="wgtvar_dtHistPoco" emptyMessage=" " 
+                         value="#{EquipamentoCtrl.equipamentosHistPoco}" var="eqHP" rows="1" rowIndexVar="idx" 
+                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}" style="font-size: 11px">
+                <f:facet name="header">
+                    <h:outputLabel style="font-weight: bold; color:#0078AE; font-size: 12px" value="Relação de Equipamentos vinculados ao Poço"/>
+                </f:facet>
+                <p:column headerText="Data Entrada" style="text-align: center">
+                    <h:outputLabel value="#{eqHP.dataCadastro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                </p:column>
+                <p:column headerText="Data Inativo" style="text-align: center">
+                    <h:outputLabel value="#{eqHP.dataInativo}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                    <p:outputLabel value="----" rendered="#{empty eqHP.dataInativo}"/>
+                </p:column>
+                <p:column headerText="Descrição">
+                    <p:outputLabel value="#{eqHP.descricao}"/>
+                </p:column>
+                <p:column headerText="Tipo">
+                    <p:outputLabel value="#{eqHP.tipoEquipamento.descricao}"/>
+                </p:column>
+                <p:column headerText="Marca">
+                    <p:outputLabel value="#{eqHP.marca.descricao}"/>
+                </p:column>
+                <p:column headerText="Localidade">
+                    <p:outputLabel value="#{eqHP.localidade.municipio.descricao} - #{eqHP.localidade.setor.setorNome}"/>
+                </p:column>
+                <p:column headerText="Local Instalação">
+                    <p:outputLabel value="#{eqHP.localInstalacao.descricao}"/>
+                </p:column>
+                <p:column headerText="Nº Tombamento" style="text-align: center">
+                    <p:outputLabel value="#{eqHP.tombamento}"/>
+                </p:column>
+                <p:column headerText="Ativo">
+                    <p:graphicImage library="images" name="check.png" rendered="#{eqHP.ativo}" height="24" width="24"/>
+                    <p:graphicImage library="images" name="disabled.png" rendered="#{!eqHP.ativo}" height="24" width="24"/>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+        <p:panel id="NoResultHistPocoEq" widgetVar="wgtvar_NoResultHistPocoEq" visible="#{EquipamentoCtrl.no_result_hist_poco}">
+            <p:outputLabel value="Nenhum Resultado encontrado. Verifique se o código do equipamento está correto."/>
+        </p:panel>
+
+    </p:dialog>
+
+</html>
+

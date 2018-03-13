@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+
+        <title>MunicipiosInterior</title>
+        <link type="text/css" rel="stylesheet" href="../resources/css/estilo_levantamentoInterior.css"/>
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+        <h:outputScript library="js" name="jquery-1.7.2.min.js" target="head"/>
+        <h:outputScript library="js" name="javascript.js" target="head"/>
+        <h:outputScript library="js" name="primeFacesLocale-pt_BR.js"/>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+
+        <style type="text/css">
+            .ui-dialog {
+                background: #e7e7e7;
+                top: 25px !important;
+            }
+
+            .exportar_PDF{
+                background: top !important;
+                background-image: url('../resources/images/pdf_export_48.png') !important;
+                background-repeat: no-repeat !important;
+                height: 50px;
+                width: 50px;
+                border: hidden !important;
+            }
+
+            .imprimir{
+                background: top !important;
+                background-image: url('../resources/images/printer_48.png') !important;
+                background-repeat: no-repeat !important;
+                height: 50px;
+                width: 50px;
+                border: hidden !important;  
+            }
+
+            .imprimir_ss{
+                background: top !important;
+                background-image: url('../resources/images/printer_48.png') !important;
+                background-repeat: no-repeat !important;
+                height: 24px;
+                width: 24px;
+                border: hidden !important;
+            }
+
+            .item{
+                font-weight: bold;
+            }
+
+            
+
+            .ui-growl {
+         .ui-datatable .ui-datatable-data .even-row td{
+                background-color: #eff3f7;
+            }
+
+            .ui-datatable .ui-datatable-data .odd-row td{
+                background-color:white;
+            }       top: 100px !important;
+            }
+            .ui-growl-item-container {
+                background-color: #ffcc66 !important;
+            }
+            
+            .ui-inputfield {
+                width: 70px;
+            }
+
+            /* not working yet */
+
+            ui-inputfield ui-inputtextarea{
+                background-color: #FCFDFD !important;
+            }
+        </style>
+
+    </h:head>
+
+    <h:body style="font-size: 12px">
+        
+        <div class="div_principal">
+        </div>
+
+        <center>
+            <p:panel id="pnlSolServico" rendered="true" style="height: 180px; width: 1050px">
+
+                <p:growl id="growl_SS" life="10000"/>
+
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <h:panelGrid columns="6">
+                            <p:outputLabel value="Usuário: "/>
+                            <p:outputLabel value="#{sessionScope.nome}" style="text-transform: uppercase"/>
+                            <p:outputLabel value="Local: "/>
+                            <p:outputLabel value="#{sessionScope.setor}" style="text-transform: uppercase"/>
+                            <p:spacer width="10"/>
+                            <p:commandButton icon="ui-icon-power" title="Sair" action="#{LoginController.logoutApp()}"/>
+                        </h:panelGrid>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <br/>
+
+                <h:form id="form_links_sol_servico" prependId="false">
+                    <p:commandLink onclick="wgtvar_dlgOpenSs.show();" action="#{SolSerCtrl.preparaInsercao()}"
+                                   update=":form_add_ss :form_open_eq_ss :form_eq_ss :form_add_eq_ss">
+                        <h:graphicImage id="giTool_open" name="tool_open_128.png" 
+                                        library="images" style="margin-left: 95px" height="72" width="72"/>
+                    </p:commandLink>
+
+                    <p:commandLink id="cdLink_relatorio" action="#{RelatorioSsCtrl.zerarPainelRelatoriosSS()}" onclick="wgtvar_dlgRelatorios.show();"
+                                   update=":form_relatorios:pnl_relatorio_analise :form_relatorios:pnl_relatorio_equipe_servico">
+                        <h:graphicImage id="giTool_graphic" 
+                                        name="tool_graphic_128.png" library="images" style="margin-left: 95px" height="72" 
+                                        width="76"/>
+                    </p:commandLink>
+
+                    <p:commandLink action="../index.xhtml?faces-redirect=true" ajax="false">
+                        <p:graphicImage id="giArrowSs_back" name="backward_64.png" 
+                                        library="images" style="margin-left: 60px" height="45" width="45"/>
+                    </p:commandLink>
+                    <br/>
+
+                    <p:outputLabel value="Abrir Solic. Serviço" style="font-weight: bold; color: #0078AE;"/>
+                    <p:outputLabel value="Relatório Solic. Serviço" style="font-weight: bold; color: #0078AE; margin-left: 25px"/>
+
+                </h:form>
+                <br/>
+            </p:panel>
+        </center>
+
+        <br/>
+
+        <h:form id="form_list_sol_servico">
+
+            <p:dataTable id="dtSolServico" widgetVar="wgtvar_dtSolServico" 
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10" rowsPerPageTemplate="10,15" emptyMessage="Nenhum 
+                         Registro Encontrado." value="#{SolSerCtrl.solicitacoesSer}" var="ss" 
+                         rowIndexVar="idx"
+                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                <p:column style="width:2%">  
+                    <p:rowToggler />  
+                </p:column>
+                <p:column>
+                    #{idx+1}
+                </p:column>
+                <p:column headerText="Número" filterBy="#{ss.id}" filterMatchMode="contains" style="width: 100px; text-align: center;">
+                    <p:graphicImage library="images" name="new.png" style="float: left;" rendered="#{ss.situacao eq 'AGUARDANDO BAIXA MANUTENÇÃO CAPITAL'}"
+                                    height="24" width="24"/>
+                    <p:outputLabel value="#{ss.id}" />
+                </p:column>
+
+                <p:column headerText="Data Abertura" filterBy="#{ss.dataAbertura}" filterMatchMode="contains" style="width: 100px; text-align: center">
+                    <h:outputLabel value="#{ss.dataAbertura}">
+                        <f:convertDateTime pattern="dd/MM/yyyy - HH:mm:ss"/>
+                    </h:outputLabel>
+                </p:column>
+                <p:column headerText="Data Fechamento" filterBy="#{ss.dataFechamento}" filterMatchMode="contains" style="width: 100px; text-align: center">
+                    <h:outputLabel value="#{ss.dataFechamento}" rendered="#{!empty ss.dataFechamento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                    <h:outputLabel value="-----" rendered="#{empty ss.dataFechamento}"/>
+                </p:column>
+                <p:column headerText="Prioridade" style="max-width: 100px; text-align: center" filterBy="#{ss.prioridade.descricao}" filterMatchMode="contains">
+                    #{ss.prioridade.descricao}
+                </p:column>
+                <p:column headerText="Situação" style="max-width: 200px; white-space: normal" filterBy="#{ss.situacao.descricao}" filterMatchMode="contains">
+                    <h:outputLabel value="#{ss.situacao}" rendered="#{ss.situacao ne 'AGUARDANDO BAIXA MANUTENÇÃO CAPITAL'}"/>
+                    <h:outputLabel value="#{ss.situacao}" rendered="#{ss.situacao eq 'AGUARDANDO BAIXA MANUTENÇÃO CAPITAL'}" style="font-weight: bold; color: #ff6666;"/>
+                </p:column>
+                <p:column headerText="Responsável SS" style="max-width: 200px; white-space: normal" filterBy="#{ss.responsavel}" filterMatchMode="contains">
+                    <h:outputLabel value="#{ss.responsavel}"/>
+                </p:column>
+                <p:column style="text-align: center">
+                    <p:commandLink rendered="#{sessionScope.municipio eq 'BOA VISTA'}" oncomplete="wgtvar_dlgEditSs.show();" 
+                                   action="#{SolSerCtrl.retornaSsAlteracao()}" title="SLTERAR SS"
+                                   update=":form_edit_ss :form_ButtonAltSs :form_equipesAddSs :form_equipesJoinSs :form_servicosAddSs :form_servicosJoinSs">
+                        <p:graphicImage library="images" name="tool_edit_128.png" height="32" width="32"/>
+                        <f:setPropertyActionListener value="#{ss}" target="#{SolSerCtrl.solser}"/>
+                        <f:setPropertyActionListener value="#{ss.id}" target="#{SolSerCtrl.param_numSs}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:column style="text-align: center">
+                    <p:commandLink rendered="#{sessionScope.municipio eq 'BOA VISTA'}" oncomplete="wgtvar_dlgEncerrarSs.show();" title="ENCERRAR SS"
+                                   action="#{SolSerCtrl.retornaSsAlteracao()}"
+                                   update=":form_encerrar_ss :form_ButtonEncerrarSs :form_dtEquipamentoEncerraSs 
+                                   :form_dtEquipamentoEncerraSs:dtEquipamentoEncerraSs
+                                   :form_equipesJoinEncerrarSs :form_servicosJoinEncerrarSs">
+                        <p:graphicImage library="images" name="tool_close_128.png" height="32" width="32"/>
+                        <f:setPropertyActionListener value="#{ss}" target="#{SolSerCtrl.solser}"/>
+                        <f:setPropertyActionListener value="#{ss.id}" target="#{SolSerCtrl.param_numSs}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:column style="text-align: center">
+                    <p:commandLink oncomplete="wgtvar_conf_impressaoSS.show();" update=":form_impressaoSS">
+                        <p:graphicImage library="images" name="printer_48.png" height="32" width="32"/>
+                        <f:setPropertyActionListener value="#{ss.id}" target="#{ImprimirSsCtrl.numSS}"/>
+                        <f:setPropertyActionListener value="#{ss.prioridade.descricao}" target="#{ImprimirSsCtrl.prioridade}"/>
+                        <f:setPropertyActionListener value="#{ss.situacao}" target="#{ImprimirSsCtrl.situacao}"/>
+                        <f:setPropertyActionListener value="#{ss.responsavel}" target="#{ImprimirSsCtrl.responsavelSS}"/>
+                        <f:setPropertyActionListener value="#{ss.parecerTecnico}" target="#{ImprimirSsCtrl.parecerTecnico}"/>
+                        <f:setPropertyActionListener value="#{ss.dataAbertura}" target="#{ImprimirSsCtrl.dataAbertura}"/>
+                        <f:setPropertyActionListener value="#{ss.dataFechamento}" target="#{ImprimirSsCtrl.dataEncerramento}"/>
+                        <f:setPropertyActionListener value="#{ss.localSolicitacao}" target="#{ImprimirSsCtrl.localAberturaSS}"/>
+                        <f:setPropertyActionListener value="#{ss.encerrada}" target="#{ImprimirSsCtrl.encerrada}"/>
+                        <f:setPropertyActionListener value="#{ss.observacao}" target="#{ImprimirSsCtrl.observacoes}"/>
+                        <f:setPropertyActionListener value="#{ss.equipe.descricao}" target="#{ImprimirSsCtrl.equipe}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:rowExpansion>  
+                    <center>
+                        <h:panelGrid  columns="6" cellpadding="10" style="width:450px; text-align: center" styleClass=" ui-widget-content grid">  
+                            <h:outputText value="Técnico/Equipe" style="font-weight: bold; color:#0078AE;"/>
+                            <h:outputText value="Parecer Técnico" style="font-weight: bold; color:#0078AE;"/>
+                            <h:outputText value="Local Abertura SS" style="font-weight: bold; color:#0078AE;"/>
+                            <h:outputText value="Observações" style="font-weight: bold; color:#0078AE;"/>
+                            <h:outputText value="Encerrada" style="font-weight: bold; color:#0078AE;"/>
+                            <h:outputText value="Serviços" style="font-weight: bold; color:#0078AE;"/>
+
+                            <h:outputText value="#{ss.equipe.descricao}" rendered="#{!empty ss.equipe.descricao}"/>
+                            <h:outputText value="-----" rendered="#{empty ss.equipe.descricao}"/> 
+                            <h:outputText value="#{ss.parecerTecnico}" rendered="#{!empty ss.parecerTecnico}"/>
+                            <h:outputText value="-----" rendered="#{empty ss.parecerTecnico}"/>
+                            <h:outputText value="#{ss.localSolicitacao}" rendered="#{!empty ss.localSolicitacao}"/>
+                            <h:outputText value="-----" rendered="#{empty ss.localSolicitacao}"/>
+                            <h:outputText value="#{ss.observacao}" rendered="#{!empty ss.observacao}"/>
+                            <h:outputText value="-----" rendered="#{empty ss.observacao}"/>
+                            <p:graphicImage library="images" name="check.png" rendered="#{ss.encerrada}" height="16" width="16"/>
+                            <p:graphicImage library="images" name="disabled.png" rendered="#{!ss.encerrada}" height="16" width="16"/>
+
+                            <p:dataTable id="dtSolServicoServico" value="#{ss.servicoSsCollection}" var="sSs" style="font-size: 10px"
+                                         emptyMessage="Nenhum Serviço Vinculado." rowIndexVar="idx" rows="1" paginator="true" paginatorPosition="bottom"
+                                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                                <p:column>
+                                    #{sSs.servico.descricaoServico}
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+
+                    </center>
+
+                    <p:dataTable id="dtSolServicoEq" value="#{ss.equipamentoSsCollection}" var="eqC" style="font-size: 10px"
+                                 emptyMessage="Nenhum Equipamento Vinculado." rowIndexVar="idx"
+                                 rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                        <f:facet name="header">
+                            <h:outputLabel value="Equipamentos" style="font-weight: bold; color:#0078AE; font-size: 12px"/>
+                        </f:facet>
+                        <p:column width="10">
+                            #{idx+1}
+                        </p:column>
+                        <p:column headerText="Código" style="text-align: center">
+                            <h:outputLabel style="font-weight: bold" value="#{eqC.equipamento.id}"/>
+                        </p:column>
+                        <p:column headerText="Descrição" style="max-width: 250px; white-space: normal">
+                            #{eqC.equipamento.descricao}
+                        </p:column>
+                        <p:column headerText="Tipo" style="max-width: 250px; white-space: normal">
+                            #{eqC.equipamento.tipoEquipamento.descricao}
+                        </p:column>
+                        <p:column headerText="Marca">
+                            #{eqC.equipamento.marca.descricao}
+                        </p:column>
+                        <p:column headerText="Localidade" style="max-width: 300px; white-space: normal">
+                            #{eqC.equipamento.localidade.setor.setorNome} - #{equipamento.localidade.municipio.descricao}
+                        </p:column>
+                        <p:column headerText="Local Operação" style="max-width: 180px; white-space: normal">
+                            #{eqC.equipamento.localOperacao.descricao}
+                        </p:column>
+                        <p:column headerText="Local Operação Técnica" style="width: 130px">
+                            #{eqC.equipamento.localOperacaoTecnica.descricao}
+                        </p:column>                         
+                        <p:column headerText="Local Instalação">
+                            <h:outputLabel rendered="#{!empty eqC.equipamento.localInstalacao.descricao}" value="#{eqC.equipamento.localInstalacao.descricao}"/>
+                            <h:outputLabel rendered="#{empty eqC.equipamento.localInstalacao.descricao}" value="-----"/>
+                        </p:column>
+                        <p:column headerText="Tombamento" style="text-align: center; width: 100px">
+                            <h:outputLabel value="#{eqC.equipamento.tombamento}" rendered="#{!empty eqC.equipamento.tombamento}"/>
+                            <h:outputLabel value="-----" rendered="#{empty eqC.equipamento.tombamento}"/>
+                        </p:column>
+                        <p:column headerText="Defeito">
+                            #{eqC.defeito}
+                        </p:column>
+                        <p:column headerText="Observação">
+                            #{eqC.observacao}
+                        </p:column>
+                    </p:dataTable>
+                </p:rowExpansion> 
+
+            </p:dataTable>
+
+        </h:form>
+
+        <ui:include id="inc_open_sol_servico" src="openSs.xhtml"/>
+        <ui:include id="inc_edit_sol_servico" src="editSs.xhtml"/>
+        <ui:include id="inc_encerrar_sol_servico" src="encerrarSs.xhtml"/>
+        <ui:include id="inc_del_sol_servico" src="delSs.xhtml"/>
+        <ui:include id="inc_dialog_historic_alt_ss" src="historicoAltSs.xhtml"/>
+        <ui:include id="inc_conf_impressaoSS" src="confirmPrint.xhtml"/>
+        <ui:include id="inc_dialog_relatorio_ss" src="../relatorios/dialog_relatorios_ss.xhtml"/>
+
+    </h:body>     
+</html>
+

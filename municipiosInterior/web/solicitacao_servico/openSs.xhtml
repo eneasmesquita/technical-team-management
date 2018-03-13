@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog header="Abertura de Solicitação de Serviço" id="dlgOpenSs" widgetVar="wgtvar_dlgOpenSs" 
+              resizable="false" modal="true" style="font-size: 11px" width="1100">
+
+        <h:form id="form_add_ss" prependId="false">
+
+            <h:panelGrid columns="4">
+                <p:outputLabel value="Local Abertura SS: "/>
+                <p:inputText value="#{sessionScope.municipio}" style="width: 200px" readonly="true"/>
+                <p:outputLabel value="Colaborador Responsável: "/>
+                <p:inputText style="width: 300px" value="#{sessionScope.nome}" readonly="true"/>
+            </h:panelGrid>
+            <br/>
+
+            <h:panelGrid columns="6">
+                <p:outputLabel value="Prioridade: "/>
+                <p:selectOneMenu value="#{SolSerCtrl.prioridade}" required="true" 
+                                 requiredMessage="Insira uma Prioridade para a Solicitação de Serviço!">
+                    <f:selectItem itemLabel="SELECIONE PRIORIDADE" itemValue="0"/>
+                    <f:selectItems value="#{PrioridadeCtrl.prioridades}" var="p" itemLabel="#{p.descricao}" itemValue="#{p.id}"/>
+                    <p:ajax listener="#{SolSerCtrl.inserePrioridade()}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Observação: "/>
+                <p:inputTextarea value="#{SolSerCtrl.observacao}" style="text-transform: uppercase; width: 250px">
+                    <p:ajax listener="#{SolSerCtrl.pegarObservacao()}"/>
+                </p:inputTextarea>
+                <p:outputLabel value="Situação SS: "/>
+                <p:outputLabel value="AGUARDANDO BAIXA MANUTENÇÃO CAPITAL" style="font-weight: bold"/>
+            </h:panelGrid>
+        </h:form>
+
+        <!-- FORMULÁRIO DE CONSULTA DE EQUIPAMENTOS -->
+
+        <h:form id="form_open_eq_ss" prependId="false">
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="Equipamento: "/>
+                        <p:selectOneMenu value="#{EquipamentoCtrl.paramIdEquipamento}" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="SELECIONE EQUIPAMENTO" itemValue="0"/>
+                            <f:selectItems value="#{EquipamentoCtrl.equipamentos}" var="equipamento" itemLabel="#{equipamento.id} - #{equipamento.descricao}" itemValue="#{equipamento.id}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton icon="ui-icon-search"  
+                                         actionListener="#{EquipamentoCtrl.retornaEquipamentoAdd(e)}" 
+                                         update=":form_eq_ss :form_eq_ss:pnlSolServicoOpen :form_eq_ss:NoResultAddEq 
+                                         :form_add_eq_ss :form_add_eq_ss:dtAddEqSs ">
+                        </p:commandButton>
+                    </h:panelGrid>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <p:commandButton icon="ui-icon-wrench" value="Equipamento Avulso" style="margin-left: 200px" disabled="true"/>
+                    <p:commandButton value="Outro Equipamento" icon="ui-icon-plus" disabled="true"/>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </h:form>
+
+        <h:form id="form_eq_ss" prependId="false">
+            <!-- PARTE DO FORMULÁRIO RESERVADA PARA DADOS DO EQUIPAMENTO -->
+
+            <p:panel id="pnlSolServicoOpen" rendered="#{SolSerCtrl.exibe_painel_add_equipamento}" style="background: top">
+
+                <h:panelGrid columns="6">
+                    <p:outputLabel value="Descrição: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.descricao}"/>
+                    <p:outputLabel value="Tipo Equipamento: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.tipoEquipamento.descricao}"/>
+                    <p:outputLabel value="Marca: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.marca.descricao}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="8">
+                    <p:outputLabel value="Tombamento: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.tombamento}"/>
+                    <p:outputLabel value="Ativo: " style="font-weight: bold"/>
+                    <p:graphicImage library="images" name="check.png" rendered="#{EquipamentoCtrl.equipamento.ativo}" height="16" width="16"/>
+                    <p:graphicImage library="images" name="disabled.png" rendered="#{!EquipamentoCtrl.equipamento.ativo}" height="16" width="16"/>
+                    <p:outputLabel value="Data Entrada: " style="font-weight: bold"/>
+                    <h:outputLabel value="#{EquipamentoCtrl.equipamento.dataCadastro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                    <p:outputLabel value="Data Inativo: " style="font-weight: bold"/>
+                    <h:outputLabel value="#{EquipamentoCtrl.equipamento.dataInativo}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                </h:panelGrid>
+
+                <h:panelGrid columns="6">
+                    <p:outputLabel value="Local de Operação: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localOperacao.descricao}"/>
+                    <p:outputLabel value="Local de Operação Técnica: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localOperacaoTecnica.descricao}"/>
+                    <p:outputLabel value="Local de Instalação: " style="font-weight: bold" 
+                                   rendered="#{not empty EquipamentoCtrl.equipamento.localInstalacao.id and EquipamentoCtrl.equipamento.localInstalacao.descricao ne 'DEFAULT'}"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localInstalacao.descricao}" 
+                                   rendered="#{not empty EquipamentoCtrl.equipamento.localInstalacao.id and EquipamentoCtrl.equipamento.localInstalacao.descricao ne 'DEFAULT'}"/>
+                </h:panelGrid>
+
+                <p:separator/>
+
+                <h:panelGrid columns="5">
+                    <p:outputLabel value="Defeito: "/>
+                    <p:inputTextarea style="width: 250px; text-transform: uppercase" value="#{SolSerCtrl.defeito}" 
+                                     required="true" requiredMessage="Informe um Defeito para o Equipamento!"/>
+                    <p:outputLabel value="Observação: "/>
+                    <p:inputTextarea style="width: 150px; text-transform: uppercase" value="#{SolSerCtrl.observacaoDefeito}"/>
+                    <p:commandButton value="Adicionar à SS" icon="ui-icon-plusthick" 
+                                     update=":form_eq_ss :form_eq_ss:pnlSolServicoOpen :form_eq_ss:NoResultAddEq :form_add_eq_ss 
+                                     :form_add_eq_ss:dtAddEqSs :growl_SS :form_add_eq_ss:btn_add_ss"
+                                     actionListener="#{SolSerCtrl.carregarEquipamentoSS(e)}"/>
+                </h:panelGrid>
+
+            </p:panel>
+
+            <p:panel id="NoResultAddEq" widgetVar="wgtvar_NoResultEditEq" visible="#{SolSerCtrl.no_result_add_eq}">
+                <p:outputLabel value="Nenhum Resultado encontrado. Verifique se o código do equipamento está correto."/>
+            </p:panel>
+
+        </h:form>
+
+        <!-- FIM DO FORMULÁRIO RESERVADO PARA DADOS DO EQUIPAMENTO -->
+
+        <h:form id="form_add_eq_ss" prependId="false">
+
+            <p:dataTable id="dtAddEqSs" rendered="#{SolSerCtrl.exibe_dataTable_add_equipamento}" rowIndexVar="idx" emptyMessage=" "
+                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}" value="#{SolSerCtrl.equipamentosAddSs}" var="eAddSs"
+                         rows="3" paginator="true" paginatorPosition="bottom">
+                <p:column>
+                    #{idx+1}
+                </p:column>
+                <p:column headerText="Cód. Equipamento" style="text-align: center">
+                    #{eAddSs.id}
+                </p:column>
+                <p:column headerText="Descrição">
+                    #{eAddSs.descricao}
+                </p:column>
+                <p:column headerText="Tipo">
+                    #{eAddSs.tipoEquipamento.descricao}
+                </p:column>
+                <p:column headerText="Marca">
+                    #{eAddSs.marca.descricao}
+                </p:column>
+                <p:column>
+                    <p:commandButton icon="ui-icon-trash" update=":form_add_eq_ss" action="#{SolSerCtrl.descarregarEquipamentoSS()}"
+                                     style="background: top; border-style: hidden">
+                        <f:setPropertyActionListener value="#{eAddSs}" target="#{SolSerCtrl.equipamentoDescartado}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <br/>
+
+            <h:panelGrid columns="2">
+
+            </h:panelGrid>
+
+            <center>
+                <p:commandButton id="btn_add_ss" icon="ui-icon-check" 
+                                 action="#{SolSerCtrl.adicionar()}"
+                                 update=":form_add_ss :form_open_eq_ss :form_eq_ss :growl_SS :form_list_sol_servico:dtSolServico :form_add_eq_ss :form_list_sol_servico:dtSolServico:dtSolServicoEq"
+                                 value="Gravar SS" rendered="#{SolSerCtrl.exibe_botao_gravar}"/>
+            </center>
+
+        </h:form>         
+
+    </p:dialog>
+
+</html>
+

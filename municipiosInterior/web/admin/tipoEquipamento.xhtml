@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p='http://primefaces.org/ui'
+      xmlns:f="http://java.sun.com/jsf/core">
+
+        <p:dialog id="dlgTipoEquipamento" widgetVar="wgtvar_dlgTipoEquipamento" header="ADMINISTRAÇÃO DE TIPOS DE EQUIPAMENTOS"
+                  resizable="false" modal="true">
+            <h:form id="form_tipoEquipamento" prependId="false">
+            <h:panelGrid columns="3">
+                <p:outputLabel value="Descrição: "/>
+                <p:inputText value="#{TipoEquipamentoCtrl.tipoEquipamento_inserir.descricao}" style="text-transform: uppercase; width: 250px"/>
+                <p:commandButton value="Gravar" icon="ui-icon-plusthick" 
+                                 action="#{TipoEquipamentoCtrl.adicionar()}" update="@form :form_listagem_tipoEquipamento :form_listagem_tipoEquipamento:dtTipoEquipamento :growl_admin"/>
+            </h:panelGrid>
+            <br/>
+            </h:form>
+            
+            <h:form id="form_listagem_tipoEquipamento" prependId="false">
+                
+            <p:dataTable id="dtTipoEquipamento" paginator="true" rows="10" rowsPerPageTemplate="10,15,20" emptyMessage="Nenhum Tipo Equipamento Encontrado." 
+                         paginatorPosition="bottom" value="#{TipoEquipamentoCtrl.tipoEquipamentos}" var="tipoEquipamento" rowIndexVar="idx"
+                         rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}">
+                <p:column >
+                    #{idx+1}
+                </p:column>
+                <p:column headerText="Código" style="text-align: center; font-weight: bold">
+                    #{tipoEquipamento.id}
+                </p:column>
+                <p:column headerText="Tipo Equipamento" filterBy="#{tipoEquipamento.descricao}" filterMatchMode="startsWith">
+                    #{tipoEquipamento.descricao}
+                </p:column>
+                <p:column>
+                    <p:commandButton icon="ui-icon-trash" update="@form :growl_admin" action="#{TipoEquipamentoCtrl.excluir()}"
+                                     style="background: top; border-style: hidden">
+                        <f:setPropertyActionListener value="#{tipoEquipamento}" target="#{TipoEquipamentoCtrl.tipoEquipamento}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <br/>
+            
+            </h:form>
+            
+        </p:dialog>
+
+    
+
+</html>
+

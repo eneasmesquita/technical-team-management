@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AnaliseEquipamento" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="10" uuid="fd22a06c-59e2-4f15-9b00-15f6d4c440e5">
+	<property name="ireport.zoom" value="1.5000000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="65"/>
+	<style name="bBox">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<pen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="bBox2">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="bBottom">
+		<box>
+			<bottomPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="bTop">
+		<box topPadding="1" leftPadding="0" bottomPadding="1" rightPadding="0">
+			<topPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="th" fontSize="7">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+			<pen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="td">
+		<box leftPadding="2" rightPadding="2">
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="tdtop">
+		<box leftPadding="2" rightPadding="2">
+			<leftPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="tdbottom">
+		<box leftPadding="2" rightPadding="2">
+			<leftPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+			<rightPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="linhas">
+		<box>
+			<topPen lineWidth="0.25"/>
+			<bottomPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="zebra">
+		<box>
+			<topPen lineWidth="0.7"/>
+			<leftPen lineWidth="0.7"/>
+			<bottomPen lineWidth="0.7"/>
+			<rightPen lineWidth="0.7"/>
+		</box>
+	</style>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<style name="pageFooter">
+		<box topPadding="5">
+			<topPen lineWidth="2.0"/>
+		</box>
+	</style>
+	<style name="bBottom2">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+		</box>
+	</style>
+	<style name="bTop2">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5" lineStyle="Dashed"/>
+		</box>
+	</style>
+	<style name="header" backcolor="#F0F0F0">
+		<box topPadding="1" leftPadding="0" bottomPadding="1" rightPadding="0">
+			<topPen lineWidth="0.75"/>
+			<bottomPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<style name="bTop3" backcolor="#F0F0F0">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5" lineStyle="Dashed"/>
+		</box>
+	</style>
+	<style name="bBottom3">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.75" lineStyle="Solid"/>
+			<bottomPen lineWidth="0.75" lineStyle="Solid"/>
+		</box>
+	</style>
+	<parameter name="logoCaer" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./logoCaer.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logoRR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["./logoRR.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="localOperacao" class="java.lang.String"/>
+	<field name="localOperacaoTecnica" class="java.lang.String"/>
+	<field name="localInstalacao" class="java.lang.String"/>
+	<field name="tombamento" class="java.lang.String"/>
+	<field name="ativo" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="dataCadastro" class="java.lang.String"/>
+	<field name="dataInativo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="88">
+			<frame>
+				<reportElement uuid="594b772d-15b0-4f8a-acb0-8b93b677f534" style="bBox2" x="0" y="0" width="132" height="78"/>
+				<image>
+					<reportElement uuid="dc445082-1410-4e92-ad6d-7f693e020f6f" x="36" y="2" width="58" height="50"/>
+					<imageExpression><![CDATA[$P{logoCaer}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement uuid="3a9ef059-d60d-4a60-9473-a1d63e8588cd" x="11" y="52" width="110" height="17"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="7" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[COMPANHIA DE ÁGUAS E ESGOTOS DE RORAIMA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="00275f8b-3f6a-417c-9546-fa31104dfd68" x="0" y="69" width="132" height="8"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="5" isBold="true" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA["AMAZÔNIA: PATRIMÔNIO DOS BRASILEIROS"]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement uuid="f16012c1-1586-4bfb-8990-51a1cdf78786" style="bBox" x="132" y="0" width="586" height="78"/>
+				<staticText>
+					<reportElement uuid="ff7b03ad-669d-4f5c-8b0e-b68dbd14b8ad" x="134" y="6" width="330" height="15"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[COMPANHIA DE ÁGUAS E ESGOTOS DE RORAIMA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="bb7033a5-2fa9-476b-b354-0fb3ffbc88a9" x="134" y="58" width="330" height="15"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[DETALHAMENTO DE EQUIPAMENTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="bb7033a5-2fa9-476b-b354-0fb3ffbc88a9" x="15" y="31" width="560" height="15"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[SISTEMA DE MONITORAMENTE DE SOLICITAÇÕES DE SERVIÇOS E DE EQUIPAMENTOS DO INTERIOR]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement uuid="139c955e-8549-4707-afd8-30d8009eea9a" style="bBox" x="718" y="0" width="83" height="32"/>
+			</frame>
+			<frame>
+				<reportElement uuid="2b24d328-c8b8-4d28-8c1d-4b602755e8d9" style="bBox" x="718" y="32" width="83" height="23"/>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="4cef7ebd-4abf-4966-b4a2-80a3283c763b" x="9" y="7" width="65" height="11"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement uuid="df82906e-f4b8-4c42-b6a1-f4c51a8cdef8" style="bBox" x="718" y="55" width="83" height="23"/>
+				<textField evaluationTime="Report">
+					<reportElement uuid="5d574e4a-f2f1-4e88-8909-808a3600f1eb" x="47" y="6" width="30" height="12"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="7efebdbf-5873-40a0-a91d-0b92bce4be0e" x="3" y="6" width="44" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement uuid="54bd6ec0-8b2b-4cdb-8c34-eccb9306027c" style="header" mode="Opaque" x="0" y="1" width="801" height="14"/>
+				<staticText>
+					<reportElement uuid="6cf635a0-cb21-47dc-bf3c-537ba0af12c8" x="24" y="2" width="169" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[DESCRIÇÃO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="2fdfacce-fc0a-4980-9d96-a74daab4960d" x="194" y="2" width="123" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[TIPO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="6068dccd-dcaa-4751-9dff-2e9a9b14ae84" x="318" y="2" width="59" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[MARCA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dd89861d-bebf-491a-85b3-230e860effbd" x="377" y="2" width="145" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[LOCAL OPERAÇÃO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dd89861d-bebf-491a-85b3-230e860effbd" x="523" y="2" width="120" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[LOCAL OPERAÇÃO TÉCNICA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dd89861d-bebf-491a-85b3-230e860effbd" x="644" y="2" width="86" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[LOCAL INSTALAÇÃO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dd89861d-bebf-491a-85b3-230e860effbd" x="731" y="2" width="45" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[TOMBAMENTO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dd89861d-bebf-491a-85b3-230e860effbd" x="776" y="2" width="25" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[ATIVO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="dd89861d-bebf-491a-85b3-230e860effbd" x="2" y="2" width="22" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[CÓD]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement uuid="dc7be71c-0d92-436d-be64-e3bcfc03c155" x="23" y="1" width="170" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="de5444e2-303f-4384-b838-a458f5ce94f4" x="318" y="1" width="59" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d0f7bcb8-e7de-4cf4-9166-9ebc8759b5d7" x="377" y="0" width="145" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{localOperacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="71128997-9f61-4793-81f1-fce740fdc170" x="730" y="0" width="46" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tombamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="02faf11f-fd64-42bc-a511-be7138da40ce" x="644" y="0" width="86" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{localInstalacao}.equals("DEFAULT") ? "-----" : $F{localInstalacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="56b09237-b46d-4ed6-87d2-c0a263828e14" x="193" y="1" width="124" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="32a6b611-5f2d-428c-83b8-5881ef6b314b" x="1" y="1" width="23" height="12"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c4520e92-6a9f-4542-bc15-8672596ccfc3" x="521" y="0" width="122" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{localOperacaoTecnica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c79c9608-5e7a-4ba2-a79a-328d7946ed68" x="776" y="0" width="25" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ativo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="138" splitType="Stretch">
+			<frame>
+				<reportElement uuid="f56405cd-182d-4d61-867f-4d9ac3e2b57f" style="pageFooter" x="0" y="15" width="801" height="52"/>
+				<image>
+					<reportElement uuid="9a1f70e0-bb66-4778-a148-cf0089e8d38f" x="0" y="0" width="120" height="47"/>
+					<imageExpression><![CDATA[$P{logoRR}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement uuid="d798434d-9c6b-43c6-9eb8-f39bb34ff16f" x="224" y="0" width="100" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA[Visão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="58740ddb-e41d-4106-b1fc-016964c48bfb" x="224" y="10" width="202" height="35"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<text><![CDATA[Ser modelo de gestão em saneamento, auto-sustentável, integrada e comprometida com a sociedade, meio ambiente, oferecendo um serviço diferenciado e reconhecido pelos clientes.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="535ea234-afee-4c5b-ab2a-f2d6469f4a68" x="447" y="0" width="100" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA[Missão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="5df9e9f4-8102-47ff-af0e-6a9f502dd812" x="447" y="10" width="202" height="35"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<text><![CDATA[Prestar adequadamente os serviços de abastecimento de água e esgotamento sanitário, com equilíbrio econômico financeiro, universalizando o atendimento, contribuindo para melhoria da qualidade de vida e da saúde da população.]]></text>
+				</staticText>
+			</frame>
+			<textField>
+				<reportElement uuid="04f7829a-679e-411f-8c82-00070f140cdc" x="83" y="1" width="100" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2fdfacce-fc0a-4980-9d96-a74daab4960d" x="0" y="3" width="83" height="10"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[TOTAL DE EQUIPAMENTOS:]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

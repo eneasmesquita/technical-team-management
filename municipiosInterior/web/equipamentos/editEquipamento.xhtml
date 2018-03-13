@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog header="Alteração de dados do Equipamento" id="dlgEditEquipamento" widgetVar="wgtvar_dlgEditEquipamento" 
+              modal="true" visible="false" resizable="false" width="880">
+
+        <h:form id="form_edit_equipamento" prependId="false">
+
+            <p:panel id="pnlEquipamentoEdit" widgetVar="wgtvar_pnlEquipamentoEdit" rendered="#{EquipamentoCtrl.exibe_painel_edit_equipamento}">
+
+                <h:panelGrid columns="4" >
+                    <p:outputLabel value="Tipo Equipamento: "/>
+                    <p:selectOneMenu required="true" value="#{EquipamentoCtrl.equipamento.tipoEquipamento.id}" filter="true" filterMatchMode="startsWith"
+                                     requiredMessage="Informe o Tipo do Equipamento.">
+                        <f:selectItem itemLabel="SELECIONE TIPO EQUIPAMENTO" itemValue=" "/>
+                        <f:selectItems value="#{EquipamentoCtrl.tipoEquipamento}" var="tiposEquipamentos" 
+                                       itemLabel="#{tiposEquipamentos.descricao}" itemValue="#{tiposEquipamentos.id}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Marca: "/>
+                    <p:selectOneMenu required="true" value="#{EquipamentoCtrl.equipamento.marca.id}" filter="true" filterMatchMode="startsWith"
+                                     requiredMessage="Informe a Marca do Equipamento.">
+                        <f:selectItem itemLabel="SELECIONE A MARCA" itemValue="0"/>
+                        <f:selectItems value="#{EquipamentoCtrl.marca}" var="marca" itemValue="#{marca.id}" itemLabel="#{marca.descricao}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <h:panelGrid columns="8">
+                    <p:outputLabel value="Tombamento: "/>
+                    <p:inputText maxlength="6" style="width: 50px;" value="#{EquipamentoCtrl.equipamento.tombamento}"/>
+                    <p:outputLabel value="Ativo: "/>
+                    <p:selectBooleanCheckbox value="#{EquipamentoCtrl.equipamento.ativo}"/>
+                    <p:outputLabel value="Data Entrada: "/>
+                    <p:calendar value="#{EquipamentoCtrl.equipamento.dataCadastro}" pages="3" pattern="dd/MM/yyyy"/>
+                    <p:outputLabel value="Data Inativo: "/>
+                    <p:calendar value="#{EquipamentoCtrl.equipamento.dataInativo}" pages="3" pattern="dd/MM/yyyy"/>
+                </h:panelGrid>
+
+                <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+                <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%-->
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Descrição: "/>
+                    <p:inputText style="width: 400px; text-transform: uppercase" value="#{EquipamentoCtrl.equipamento.descricao}" required="true" 
+                                 requiredMessage="Informe a Descrição do Equipamento."/>
+
+                    <p:outputLabel value="Local de Operação: "/>
+                    <p:selectOneMenu value="#{EquipamentoCtrl.equipamento.localOperacao.id}" required="true" 
+                                     requiredMessage="Informe o Local de Operação do Equipamento.">
+                        <f:selectItem itemLabel="SELECIONE LOCAL DE OPERAÇÃO" itemValue="0"/>
+                        <f:selectItems value="#{EquipamentoCtrl.localOperacao}" var="localOperacao" 
+                                       itemLabel="#{localOperacao.descricao}" itemValue="#{localOperacao.id}"/>
+                        <p:ajax event="change" listener="#{EquipamentoCtrl.exibeLocalOpeTecEdit(e)}" 
+                                update="form_edit_equipamento:pnl_opcoes_edit_eq form_edit_equipamento:pnl_opcoes_eq_li_edit"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <p:panel id="pnl_opcoes_edit_eq" style="background: top; border: hidden" 
+                         visible="#{EquipamentoCtrl.exibe_som_eq_lto_edit}">
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Local de Operação Técnica: "/>
+                        <p:selectOneMenu id="som_eq_lto_captacao_edit" value="#{EquipamentoCtrl.equipamento.localOperacaoTecnica.id}" required="true" 
+                                         requiredMessage="Informe o Local de Operação Técnica do Equipamento.">
+                            <f:selectItem itemLabel="SELECIONE LOCALIDADE TÉCNICA OPERACIONAL" itemValue="0"/>
+                            <f:selectItems value="#{EquipamentoCtrl.getLocalOperacaoTecnicaEdit()}" var="lotecnicas" itemLabel="#{lotecnicas.descricao}" itemValue="#{lotecnicas.id}"/>
+                            <p:ajax event="change" listener="#{EquipamentoCtrl.exibeLocalInstaEdit(e)}" 
+                                    update="form_edit_equipamento:pnl_opcoes_edit_eq form_edit_equipamento:pnl_opcoes_eq_li_edit"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                </p:panel>
+
+                <p:panel id="pnl_opcoes_eq_li_edit" style="background: top; border: hidden" visible="#{EquipamentoCtrl.exibe_pnlGrid_eq_li_edit}">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Local de Instalação: "/>
+                        <p:selectOneMenu id="som_eq_li_edit" value="#{EquipamentoCtrl.equipamento.localInstalacao.id}" required="true" 
+                                         requiredMessage="Informe o Local de Instalação do Equipamento.">
+                            <f:selectItem itemLabel="SELECIONE LOCAL DE INSTALAÇÃO" itemValue="0"/>
+                            <f:selectItems value="#{EquipamentoCtrl.localInstalacao}" var="locaisInstalacao" 
+                                           itemLabel="#{locaisInstalacao.descricao}" itemValue="#{locaisInstalacao.id}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:panel>
+
+            <p:panel id="pnlOpcoesMunicipio" widgetVar="wgtvar_pnlOpcoesMunicipio" rendered="#{EquipamentoCtrl.exibe_painel_edit_equipamento}">
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Localidade: "/>
+                    <p:selectOneMenu value="#{EquipamentoCtrl.equipamento.localidade.id}" required="true" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="SELECIONE O MUNICÍPIO" itemValue=" "/>
+                        <f:selectItems value="#{EquipamentoCtrl.localidadeFiltro}" var="localidade" 
+                                       itemValue="#{localidade.id}" itemLabel="#{localidade.setor.setorNome} - #{localidade.municipio.descricao}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <center>
+                    <p:commandButton value="Alterar" action="#{EquipamentoCtrl.alterar()}" oncomplete="wgtvar_dlgEditEquipamento.hide();"
+                                     update="@form :form_list_equipamento:dtEquipamento :growl_eq" />
+                </center>
+
+            </p:panel>
+
+        </h:form>
+
+    </p:dialog>
+
+
+</html>

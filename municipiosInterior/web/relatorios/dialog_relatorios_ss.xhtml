@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <p:dialog id="dlgRelatorios" widgetVar="wgtvar_dlgRelatorios" header="Relatórios"
+              modal="true" resizable="false">
+
+        <h:form id="form_relatorios_menu" prependId="false">
+            <p:menu style="float: left">
+                <p:menuitem value="Análise SS" style="color: #0078AE" actionListener="#{RelatorioSsCtrl.exibePnlRelAnalise()}" 
+                            update=":form_relatorios:pnl_relatorio_analise :form_relatorios:pnl_relatorio_equipe_servico"/>
+                <p:menuitem value="SS por Equipe/Serviço Executado" style="color: 
+                            #0078AE" actionListener="#{RelatorioSsCtrl.exibePnlRelEquipeServico()}" 
+                            update=":form_relatorios:pnl_relatorio_analise :form_relatorios:pnl_relatorio_equipe_servico"/>
+            </p:menu>
+        </h:form>
+        <!-- painel Análise SS -->
+
+        <h:form id="form_relatorios" prependId="false">
+
+            <p:panel style="width: 1100px; height: 300px">
+                <!-- SS por município -->
+
+                <p:panel id="pnl_relatorio_analise" style="margin-left: 190px" visible="#{RelatorioSsCtrl.pnl_rel_analise}">
+
+                    <h:panelGrid columns="2">
+                        <h:column>
+                            <h:panelGrid columns="2" style="font-size: 10px; font-weight: bold; border-right: 1px solid #777">
+                                <p:outputLabel value="SITUAÇÃO" rendered="#{RelatorioSsCtrl.paramLocalidade ne '' and RelatorioSsCtrl.periodo ne ''}"/>
+                                <p:selectBooleanCheckbox value="#{RelatorioSsCtrl.situacao}" rendered="#{RelatorioSsCtrl.paramLocalidade ne '' and RelatorioSsCtrl.periodo ne ''}">
+                                    <p:ajax listener="#{RelatorioSsCtrl.inserirSituacao()}" update="@form"/>
+                                </p:selectBooleanCheckbox>
+                                <p:outputLabel value="PRIORIDADE"/>
+                                <p:selectBooleanCheckbox value="#{RelatorioSsCtrl.prioridade}">
+                                    <p:ajax listener="#{RelatorioSsCtrl.inserirPrioridade()}" update="@form"/>
+                                </p:selectBooleanCheckbox>
+                            </h:panelGrid>
+                        </h:column>
+                        <h:column>
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Localidade: "/>
+                                <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{RelatorioSsCtrl.paramLocalidade}">
+                                    <f:selectItem itemLabel="SELECIONE LOCALIDADE" itemValue="0"/>
+                                    <f:selectItems value="#{EquipamentoCtrl.localidade}" var="localidade" 
+                                                   itemValue="#{localidade.municipio.id}" itemLabel="#{localidade.setor.setorNome} - #{localidade.municipio.descricao}"/>
+                                    <p:ajax listener="#{RelatorioSsCtrl.manterValorParamLocalidade()}" update="@form"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="5">
+                                <p:selectOneRadio value="#{RelatorioSsCtrl.periodo}">
+                                    <f:selectItem itemLabel="Geral" itemValue="GERAL"/>
+                                    <f:selectItem itemLabel="Intervalo de Tempo" itemValue="INTERVALO"/>
+                                    <p:ajax listener="#{RelatorioSsCtrl.inserirPeriodo()}" update="@form"/>
+                                </p:selectOneRadio>
+                                <p:calendar locale="pt_BR" value="#{RelatorioSsCtrl.paramPeriodo}" style="width: 50px"
+                                            rendered="#{RelatorioSsCtrl.exibeCalendar or RelatorioSsCtrl.exibeIntervalo}">
+                                    <p:ajax event="dateSelect" listener="#{RelatorioSsCtrl.manterValorParamPeriodo()}" update="@form"/>
+                                </p:calendar>
+                                <p:outputLabel value="à" rendered="#{RelatorioSsCtrl.exibeIntervalo}"/>
+                                <p:calendar locale="pt_BR" value="#{RelatorioSsCtrl.paramPeriodoIntervalo}" style="width: 50px !important"
+                                            rendered="#{RelatorioSsCtrl.exibeIntervalo}">
+                                    <p:ajax event="dateSelect" listener="#{RelatorioSsCtrl.manterValorParamPeriodoIntervalo()}" update="@form"/>
+                                </p:calendar>
+                                <p:panel style="background-color: beige; border: 1px solid #ffcc66; font-size: 10px; width: 250px" rendered="#{RelatorioSsCtrl.exibeIntervalo}">
+                                    <p:outputLabel value="Caso queira um mês específico, insira o 1º dia do mês e o último dia." style="color: gray"/><br/>
+                                    <p:outputLabel value="Caso queira um ano específico, insira o 1º dia do ano e o último dia." style="color: gray"/>
+                                </p:panel>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="4">
+                                <p:outputLabel value="Situação: " rendered="#{RelatorioSsCtrl.situacao}"/>
+                                <!--  OS VALORES PARA OS TIPOS DE SITUAÇÕES NÃO SÃO A DESCRIÇÃO DE CADA UMA DEVIDO AO PRIMEFACES NÃO ESTAR  -->
+                                <!-- PERMITINDO PASSAR PARA O CONTROLADOR STRING COM CARACTERES ESPECIAIS E ACENTUAÇÃO-->
+                                <!-- MAS ISSO ESTÁ OCORRENDO APENAS NESTE COMPONENTE EM ESPECÍFICO-->
+                                <p:selectOneMenu value="#{RelatorioSsCtrl.paramSituacao}" filter="true" filterMatchMode="startsWith" rendered="#{RelatorioSsCtrl.situacao}">
+                                    <f:selectItem itemLabel="SELECIONE SITUAÇÃO" itemValue=" "/>
+                                    <f:selectItems value="#{RelatorioSsCtrl.situacoes}" var="situacao" itemLabel="#{situacao.label}" itemValue="#{situacao.valor}"/>
+                                    <p:ajax listener="#{RelatorioSsCtrl.manterValorParamSituacao()}"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Prioridade: " rendered="#{RelatorioSsCtrl.prioridade}"/>
+                                <p:selectOneMenu value="#{RelatorioSsCtrl.paramPrioridade}" filter="true" filterMatchMode="startsWith" rendered="#{RelatorioSsCtrl.prioridade}">
+                                    <f:selectItem itemLabel="SELECIONE PRIORIDADE" itemValue=" "/>
+                                    <f:selectItems value="#{PrioridadeCtrl.prioridades}" var="prioridade" itemLabel="#{prioridade.descricao}" itemValue="#{prioridade.id}"/>
+                                    <p:ajax listener="#{RelatorioSsCtrl.manterValorParamPrioridade()}" update="@form"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+
+                            <center>
+                                <p:commandButton rendered="#{RelatorioSsCtrl.paramLocalidade ne '' and RelatorioSsCtrl.periodo ne ''}"
+                                                 value="Relatório" actionListener="#{RelatorioSsCtrl.gerarRelatorioAnaliseSS(e)}" ajax="false"/>
+                            </center>    
+                        </h:column>
+                    </h:panelGrid>
+
+                </p:panel>
+
+                <!-- SS por Equipe/Serviço Executado -->
+
+                <p:panel id="pnl_relatorio_equipe_servico" style="margin-left: 190px; height: 205px" visible="#{RelatorioSsCtrl.pnl_rel_equipe_servico}">
+                    <h:panelGrid columns="4">
+                        <p:outputLabel value="Equipe: "/>
+                        <p:selectOneMenu filter="true" filterMatchMode="startsWith" value="#{RelatorioSsCtrl.paramEquipe}">
+                            <f:selectItem itemLabel="SELECIONE EQUIPE" itemValue="0"/>
+                            <f:selectItems value="#{EquipeCtrl.equipes}" var="equipe" itemLabel="#{equipe.descricao}" itemValue="#{equipe.id}"/>
+                            <p:ajax listener="#{RelatorioSsCtrl.manterValorParamEquipe()}" update="@form"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Serviço Executado: "/>
+                        <p:selectOneMenu filter="true" filterMatchMode="startsWith" value="#{RelatorioSsCtrl.paramServico}">
+                            <f:selectItem itemLabel="SELECIONE SERVIÇO" itemValue="0"/>
+                            <f:selectItems value="#{ServicoCtrl.servicos}" var="servico" itemLabel="#{servico.descricaoServico}" itemValue="#{servico.id}"/>
+                            <p:ajax listener="#{RelatorioSsCtrl.manterValorParamServico()}" update="@form"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="5">
+                        <p:selectOneRadio value="#{RelatorioSsCtrl.periodoES}">
+                            <f:selectItem itemLabel="Geral" itemValue="GERAL"/>
+                            <f:selectItem itemLabel="Intervalo de Tempo" itemValue="INTERVALO"/>
+                            <p:ajax listener="#{RelatorioSsCtrl.inserirPeriodoES()}" update="@form"/>
+                        </p:selectOneRadio>
+                        <p:calendar locale="pt_BR" value="#{RelatorioSsCtrl.paramPeriodoES}" style="width: 50px"
+                                    rendered="#{RelatorioSsCtrl.exibeIntervaloES}">
+                            <p:ajax event="dateSelect" listener="#{RelatorioSsCtrl.manterValorParamPeriodoES()}" update="@form"/>
+                        </p:calendar>
+                        <p:outputLabel value="à" rendered="#{RelatorioSsCtrl.exibeIntervaloES}"/>
+                        <p:calendar locale="pt_BR" value="#{RelatorioSsCtrl.paramPeriodoIntervaloES}" style="width: 50px !important"
+                                    rendered="#{RelatorioSsCtrl.exibeIntervaloES}">
+                            <p:ajax event="dateSelect" listener="#{RelatorioSsCtrl.manterValorParamPeriodoIntervaloES()}" update="@form"/>
+                        </p:calendar>
+                        <p:panel style="background-color: beige; border: 1px solid #ffcc66; font-size: 10px; width: 250px" rendered="#{RelatorioSsCtrl.exibeIntervaloES}">
+                            <p:outputLabel value="Caso queira um mês específico, insira o 1º dia do mês e o último dia." style="color: gray"/><br/>
+                            <p:outputLabel value="Caso queira um ano específico, insira o 1º dia do ano e o último dia." style="color: gray"/>
+                        </p:panel>
+                    </h:panelGrid>
+                    <center>
+                        <p:commandButton rendered="#{RelatorioSsCtrl.paramEquipe != 0 and RelatorioSsCtrl.paramServico != 0 and RelatorioSsCtrl.periodoES ne ''}"
+                                         value="Relatório" actionListener="#{RelatorioSsCtrl.gerarRelatorioEquipeServico(e)}" ajax="false"/>
+                    </center>
+                </p:panel>
+
+            </p:panel>
+
+        </h:form>
+
+    </p:dialog>
+
+
+</html>
+
+

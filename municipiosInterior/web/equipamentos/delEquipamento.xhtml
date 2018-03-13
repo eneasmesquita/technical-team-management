@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog header="Exclusão de Equipamento" id="dlgDelEquipamento" widgetVar="wgtvar_dlgDelEquipamento"
+              modal="true" visible="false" resizable="false" width="872">
+
+        <h:form id="form_del_equipamento" prependId="false">
+
+            <p:panel id="pnlEquipamentoDel">
+                <h:panelGrid columns="4" >
+                    <p:outputLabel value="Tipo Equipamento: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.tipoEquipamento.descricao}"/>
+                    <p:outputLabel value="Marca: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.marca.descricao}"/>
+                </h:panelGrid>
+                <h:panelGrid columns="8">
+                    <p:outputLabel value="Tombamento: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.tombamento}"/>
+                    <p:outputLabel value="Ativo: " style="font-weight: bold"/>
+                    <p:graphicImage library="images" name="check.png" rendered="#{EquipamentoCtrl.equipamento.ativo}" height="32" width="32"/>
+                    <p:graphicImage library="images" name="disabled.png" rendered="#{!EquipamentoCtrl.equipamento.ativo}" height="32" width="32"/>
+                    <p:outputLabel value="Data Entrada: " style="font-weight: bold"/>
+                    <h:outputLabel value="#{EquipamentoCtrl.equipamento.dataCadastro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                    <p:outputLabel value="Data Inativo: " style="font-weight: bold"/>
+                    <h:outputLabel value="#{EquipamentoCtrl.equipamento.dataInativo}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputLabel>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+                    <p:outputLabel value="Descrição: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.descricao}"/>
+                    <p:outputLabel value="Local de Operação: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localOperacao.descricao}"/>
+                    <p:outputLabel value="Local de Operação Técnica: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localOperacaoTecnica.descricao}"/>
+                    <p:outputLabel value="Local de Instalação: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localInstalacao.descricao}"/>
+                    <p:outputLabel value="Município: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{EquipamentoCtrl.equipamento.localidade.setor.setorNome} - #{EquipamentoCtrl.equipamento.localidade.municipio.descricao}"/>
+                </h:panelGrid>
+                <center>
+                    <p:commandButton value="Excluir" actionListener="#{EquipamentoCtrl.excluir(al)}" oncomplete="wgtvar_dlgDelEquipamento.hide();"
+                                     update="@form :form_list_equipamento:dtEquipamento :growl_eq"/>
+                </center>
+            </p:panel>
+
+        </h:form>
+
+    </p:dialog>
+
+</html>
+

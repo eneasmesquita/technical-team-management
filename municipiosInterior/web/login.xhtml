@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <f:view contentType="text/html">
+    <h:head>
+        <title>GTI</title>
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+        <link type="text/css" rel="stylesheet" href="resources/css/estilo_levantamentoInterior.css"/>
+    </h:head>
+    <h:body style="background-color: #ffffff; font-size: 13px">
+       
+        <p:watermark value="informe seu Login" for=":form_login:it_login"/>
+        <p:watermark value="informe sua senha" for=":form_login:it_senha"/>
+        <h:form id="form_login">
+            <center>
+
+                <div class="div_login" style="border: 3px solid #DEEDF7">
+                    <h:panelGrid columns="2">
+                        <abbr class="abbr_login">
+                            Login: 
+                        </abbr>
+                        <p:inputText id="it_login" value="#{LoginController.usuario.login}" required="true" requiredMessage="O Campo Login é obrigatório!"/>
+                        <abbr class="abbr_login">
+                            Senha: 
+                        </abbr>
+                        <p:password id="it_senha" value="#{LoginController.usuario.senha}" required="true" requiredMessage="O Campo Senha é obrigatório!"/>
+                    </h:panelGrid>
+                </div>
+                <br/>
+                <p:commandButton value="Logar" action="#{LoginController.logon()}" update="msgs_login"/>
+            </center>
+            <br/>
+            <br/>
+            <center>
+                <div style="width: 450px">
+                <p:messages id="msgs_login" showDetail="true"/>
+                </div>
+            </center>
+        </h:form>
+        <br/>
+        <br/>
+        <br/>
+
+        <div id="bottom">
+            <h:panelGroup layout="block" id="bottom-conteudo">
+                <h:panelGroup layout="block" id="endereco">
+                    <h3>Gerência de Tecnologia da Informação - GTI</h3>
+                </h:panelGroup>
+            </h:panelGroup>
+        </div>
+
+    </h:body>
+    </f:view>
+</html>
+

@@ -1,0 +1,230 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>MunicipiosInterior</title>
+            <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+            <link type="text/css" rel="stylesheet" href="../resources/css/estilo_levantamentoInterior.css"/>
+            <h:outputScript library="js" name="jquery-1.7.2.min.js" target="head"/>
+            <h:outputScript library="js" name="javascript.js" target="head"/>
+            <h:outputScript library="js" name="primeFacesLocale-pt_BR.js"/>
+            <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>-->
+            <style type="text/css">
+                
+                .ui-inputfield {
+                    width: 70px;
+                }
+                
+                .ui-dialog {
+                    background: #e7e7e7;
+                    top: 25px !important;
+                }
+
+                .ui-growl {
+                    top: 100px !important;
+                }
+                .ui-growl-item-container {
+                    background-color: #ffcc66 !important;
+                }
+
+                .exportar_PDF{
+                    background: top !important;
+                    background-image: url('../resources/images/pdf_export_48.png') !important;
+                    background-repeat: no-repeat !important;
+                    height: 50px;
+                    width: 50px;
+                    border: hidden !important;
+                }
+
+                .imprimir{
+                    background: top !important;
+                    background-image: url('../resources/images/printer_48.png') !important;
+                    background-repeat: no-repeat !important;
+                    height: 50px;
+                    width: 50px;
+                    border: hidden !important;  
+                }
+
+                .ui-datatable .ui-datatable-data .even-row td{
+                    background-color: #eff3f7;
+                }
+
+                .ui-datatable .ui-datatable-data .odd-row td{
+                    background-color:white;
+                }
+
+                .ui-datatable .ui-column-filter{
+                    width:60px !important;
+                    text-transform: uppercase !important;
+                }
+
+ 
+                </style>
+                <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+                <meta http-equiv="Pragma" content="no-cache"/>
+                <meta http-equiv="Expires" content="0"/>
+            </h:head>
+
+            <h:body style="font-size: 12px">
+
+                <div class="div_principal">
+
+                    <p:panel id="pnlEquipamentos" rendered="true" style="height: 180px">
+
+                        <p:growl id="growl_eq" life="10000"/>
+
+                        <p:toolbar>
+                            <p:toolbarGroup align="right">
+                                <h:panelGrid columns="6">
+                                    <p:outputLabel value="Usuário: "/>
+                                    <p:outputLabel value="#{sessionScope.nome}" style="text-transform: uppercase"/>
+                                    <p:outputLabel value="Local: "/>
+                                    <p:outputLabel value="#{sessionScope.setor}" style="text-transform: uppercase"/>
+                                    <p:spacer width="10"/>
+                                    <p:commandButton icon="ui-icon-power" title="Sair" action="#{LoginController.logoutApp()}"/>
+                                </h:panelGrid>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <div>
+                            <h:form id="form_links_equipamento" prependId="false">
+                                <p:commandLink onclick="wgtvar_dlgCadEquipamento.show();" action="#{EquipamentoCtrl.preparaInsercao()}" update=":form_cad_eq">
+                                    <h:graphicImage id="giPipe_open" name="pipe_open_128.png" library="images" style="margin-left: 100px" height="72" width="72"/>
+                                </p:commandLink>
+                                <p:commandLink style="margin-left: 100px" onclick="wgtvar_dlgRelatoriosEq.show();" 
+                                               action="#{RelatorioEqCtrl.zerarPainelRelatoriosEq()}" 
+                                               update=":form_relatorios_eq:pnl_relatorio_analise_eq :form_relatorios_eq:pnl_historico_equipamento">
+                                    <p:graphicImage id="giPipe_graphic" library="images" name="pipe_graphic.png" width="72" height="72"/>
+                                </p:commandLink>
+
+                                <p:commandLink style="margin-left: 100px" onclick="wgtvar_dlgHistPoco.show();" action="#{EquipamentoCtrl.limpa()}" 
+                                               update=":form_historic_poco_search :form_historic_poco">
+                                    <p:graphicImage id="giWell_historic" library="images" name="well_historic.png" width="72" height="72"/>
+                                </p:commandLink>
+                                <p:commandLink onclick="wgtvar_dlgHistEquipamento.show();" action="#{EquipamentoCtrl.limpa()}" 
+                                               update=":form_historico_equipamento_search :form_historico_equipamento">
+                                    <h:graphicImage id="giPipe_historic" name="pipe_historic_128.png" library="images" style="margin-left: 120px" height="72" width="72"/>
+                                </p:commandLink>
+                                <p:commandLink action="../index.xhtml?faces-redirect=true" ajax="false">
+                                    <p:graphicImage id="giArrowEq_back" name="backward_64.png" library="images" style="margin-left: 80px" height="45" width="45"/>
+                                </p:commandLink>
+                                <br/>
+
+                                <p:outputLabel value="Cadastrar Equipamento" style="font-weight: bold; color: #0078AE; margin-left: 60px"/>
+                                <p:outputLabel value="Relatório" style="font-weight: bold; color: #0078AE; margin-left: 70px"/>
+                                <p:outputLabel value="Histórico de Poço" style="font-weight: bold; color: #0078AE; margin-left: 85px"/>
+                                <p:outputLabel value="Histórico de Equipamento" style="font-weight: bold; color: #0078AE; margin-left: 50px"  
+                                               title="PARA FUNCIONAR, NECESSÁRIO IMPLEMENTAR SERVIÇOS"/><br/>
+
+                                <br/>
+                                <p:outputLabel value="" style="font-weight: bold; color: #ff6666; margin-left: 365px"/>
+                                <p:outputLabel value="" style="font-weight: bold; color: #0078AE; margin-left: 75px"/>
+                            </h:form>
+                        </div>
+                        <br/>
+
+                    </p:panel>
+
+                </div>
+
+                <br/>
+                <h:form id="form_list_equipamento">
+
+                    <p:dataTable id="dtEquipamento" widgetVar="wgtvar_dtEquipamento" paginator="true" paginatorPosition="bottom"
+                                 rows="10" rowsPerPageTemplate="10,15,20,50" emptyMessage="Nenhum Registro Encontrado." 
+                                 value="#{EquipamentoCtrl.equipamentos}" var="equipamento" rowIndexVar="idx" 
+                                 rowStyleClass="#{empty idx or idx mod 2 ne 0 ? 'even-row' : 'odd-row'}" style="font-size: 11px">
+                        <p:column style="width:2%">  
+                            <p:rowToggler />  
+                        </p:column>
+                        <p:column width="10">
+                            #{idx+1}
+                        </p:column>
+                        <p:column headerText="Código" style="text-align: center" filterBy="#{equipamento.id}" filterMatchMode="contains">
+                            #{equipamento.id}
+                        </p:column>
+                        <p:column headerText="Descrição" style="max-width: 250px; white-space: normal" filterBy="#{equipamento.descricao}" filterMatchMode="contains">
+                            #{equipamento.descricao}
+                        </p:column>
+                        <p:column headerText="Tipo" style="max-width: 250px; white-space: normal" filterBy="#{equipamento.tipoEquipamento.descricao}" filterMatchMode="contains">
+                            #{equipamento.tipoEquipamento.descricao}
+                        </p:column>
+                        <p:column headerText="Marca" filterBy="#{equipamento.marca.descricao}" filterMatchMode="contains">
+                            #{equipamento.marca.descricao}
+                        </p:column>
+                        <p:column headerText="Localidade" style="max-width: 300px; white-space: normal" filterBy="#{equipamento.localidade.setor.setorNome}" filterMatchMode="contains">
+                            #{equipamento.localidade.setor.setorNome} - #{equipamento.localidade.municipio.descricao}
+                        </p:column>
+                        <p:column headerText="Local Operação" style="max-width: 180px; white-space: normal" filterBy="#{equipamento.localOperacao.descricao}" filterMatchMode="contains">
+                            #{equipamento.localOperacao.descricao}
+                        </p:column>
+                        <p:column headerText="Local Operação Técnica" style="width: 130px" filterBy="#{equipamento.localOperacaoTecnica.descricao}" filterMatchMode="contains">
+                            #{equipamento.localOperacaoTecnica.descricao}
+                        </p:column>                         
+                        <p:column headerText="Local Instalação" filterBy="#{equipamento.localInstalacao.descricao}" filterMatchMode="contains">
+                            <h:outputLabel rendered="#{equipamento.localInstalacao.descricao ne 'DEFAULT'}" value="#{equipamento.localInstalacao.descricao}"/>
+                            <h:outputLabel rendered="#{equipamento.localInstalacao.descricao eq 'DEFAULT'}" value="-----" style="text-align: center"/>
+                        </p:column>
+                        <p:column headerText="Tombamento" style="text-align: center; width: 100px" filterBy="#{equipamento.tombamento}" filterMatchMode="contains">
+                            #{equipamento.tombamento}
+                        </p:column>
+                        <p:column>
+                            <p:commandLink rendered="#{sessionScope.municipio eq 'BOA VISTA'or Integer.valueOf(equipamento.localidade.setor) eq sessionScope.setor_id}"
+                                           oncomplete="wgtvar_dlgEditEquipamento.show();" action="#{EquipamentoCtrl.retornaEquipamentoEdit()}" 
+                                           title="ALTERAR EQUIPAMENTO"
+                                           update=":form_edit_equipamento :form_edit_equipamento:pnlEquipamentoEdit 
+                                           :form_edit_equipamento:pnlOpcoesMunicipio :form_edit_equipamento:pnl_opcoes_edit_eq 
+                                           :form_edit_equipamento:pnl_opcoes_eq_li_edit">
+                                <h:graphicImage id="giPipe_edit" name="pipe_edit_128.png" library="images" height="32" width="32"/>
+                                <f:setPropertyActionListener value="#{equipamento}" target="#{EquipamentoCtrl.equipamento}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:column>
+                            <p:commandLink rendered="#{sessionScope.municipio eq 'BOA VISTA'or Integer.valueOf(equipamento.localidade.setor) eq sessionScope.setor_id}"
+                                           oncomplete="wgtvar_dlgDelEquipamento.show();" title="EXCLUIR EQUIPAMENTO"
+                                           update=":form_del_equipamento :form_del_equipamento:pnlEquipamentoDel">
+                                <h:graphicImage id="giPipe_trash" name="pipe_trash_128.png" library="images" height="32" width="32"/>
+                                <f:setPropertyActionListener value="#{equipamento}" target="#{EquipamentoCtrl.equipamento}"/>
+                            </p:commandLink>
+                        </p:column>
+                        <p:rowExpansion>
+                            <center>
+                                <h:panelGrid  columns="3" cellpadding="10" style="width:450px; text-align: center"  
+                                              styleClass=" ui-widget-content grid">
+                                    <h:outputText value="Data Cadastro" style="font-weight: bold; color:#0078AE;"/> 
+                                    <h:outputText value="Ativo" style="font-weight: bold; color:#0078AE;"/>  
+                                    <h:outputText value="Data Inativo" style="font-weight: bold; color:#0078AE;"/>
+                                    <h:outputLabel value="#{equipamento.dataCadastro}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                    </h:outputLabel>
+                                    <p:graphicImage library="images" name="check.png" rendered="#{equipamento.ativo}" height="32" width="32"/>
+                                    <p:graphicImage library="images" name="disabled.png" rendered="#{!equipamento.ativo}" height="32" width="32"/>
+                                    <h:outputLabel value="#{equipamento.dataInativo}" rendered="#{!empty equipamento.dataInativo}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                    </h:outputLabel>
+                                    <h:outputLabel rendered="#{empty equipamento.dataInativo}" value="-----"/>
+                                </h:panelGrid>
+                            </center>
+                        </p:rowExpansion>
+                    </p:dataTable>
+                </h:form>
+
+                <ui:include id="inc_cad_equipamento" src="cadEquipamento.xhtml"/>
+                <ui:include id="inc_edit_equipamento" src="editEquipamento.xhtml"/>
+                <ui:include id="inc_del_equipamento" src="delEquipamento.xhtml"/>
+                <ui:include id="inc_historico_equipamento" src="historico_equipamento.xhtml"/>
+                <ui:include id="inc_historico_poço" src="historico_poco.xhtml"/>
+                <ui:include id="inc_dialog_relatorios_eq" src="../relatorios/dialog_relatorios_eq.xhtml"/>
+
+            </h:body>    
+        </f:view>
+
+    </html>
+

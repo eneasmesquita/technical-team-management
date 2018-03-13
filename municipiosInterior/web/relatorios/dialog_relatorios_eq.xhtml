@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog id="dlgRelatoriosEq" widgetVar="wgtvar_dlgRelatoriosEq" header="Relatórios"
+              modal="true" resizable="false">
+
+        <h:form id="form_relatorios_menu_eq" prependId="false">
+            <p:menu style="float: left">
+                <p:menuitem value="Análise Equipamentos" style="color: #0078AE" actionListener="#{RelatorioEqCtrl.exibePnlRelAnaliseEq()}" 
+                            update=":form_relatorios_eq:pnl_relatorio_analise_eq :form_relatorios_eq:pnl_historico_equipamento"/>
+                <p:menuitem value="Histórico Equipamento" style="color: #0078AE" actionListener="#{RelatorioEqCtrl.exibePnlHistoricoEquipamento()}"
+                            update=":form_relatorios_eq:pnl_relatorio_analise_eq :form_relatorios_eq:pnl_historico_equipamento"/>
+            </p:menu>
+        </h:form>
+        <!-- painel Análise SS -->
+
+        <h:form id="form_relatorios_eq" prependId="false">
+
+            <p:panel style="width: 1250px; height: 350px">
+
+                <p:panel id="pnl_relatorio_analise_eq" style="margin-left: 160px" visible="#{RelatorioEqCtrl.pnl_rel_analise_eq}">
+
+                    <h:panelGrid columns="2">
+                        <h:column>
+                            <h:panelGrid columns="2" style="font-size: 10px; font-weight: bold; border-right: 1px solid #777">
+                                <p:outputLabel value="TIPO EQUIPAMENTO"/>
+                                <p:selectBooleanCheckbox value="#{RelatorioEqCtrl.tipoEquipamento}">
+                                    <p:ajax listener="#{RelatorioEqCtrl.inserirTipoEquipamento()}" update="@form"/>
+                                </p:selectBooleanCheckbox>
+                                <p:outputLabel value="MARCA"/>
+                                <p:selectBooleanCheckbox value="#{RelatorioEqCtrl.marca}">
+                                    <p:ajax listener="#{RelatorioEqCtrl.inserirMarca()}" update="@form"/>
+                                </p:selectBooleanCheckbox>
+                                <p:outputLabel value="ATIVO"/>
+                                <p:selectBooleanCheckbox value="#{RelatorioEqCtrl.ativo}">
+                                    <p:ajax listener="#{RelatorioEqCtrl.inserirEquipamentosAtivos()}" update="@form"/>
+                                </p:selectBooleanCheckbox>
+                                <p:outputLabel value="INATIVO"/>
+                                <p:selectBooleanCheckbox value="#{RelatorioEqCtrl.inativo}">
+                                    <p:ajax listener="#{RelatorioEqCtrl.inserirEquipamentosInativos}" update="@form"/>
+                                </p:selectBooleanCheckbox>
+                            </h:panelGrid>
+                        </h:column>
+                        <h:column>
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Localidade: "/>
+                                <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{RelatorioEqCtrl.paramLocalidade}">
+                                    <f:selectItem itemLabel="SELECIONE LOCALIDADE" itemValue="0"/>
+                                    <f:selectItems value="#{EquipamentoCtrl.localidade}" var="localidade" 
+                                                   itemValue="#{localidade.municipio.id}" itemLabel="#{localidade.municipio.descricao} - #{localidade.setor.setorNome}"/>
+                                    <p:ajax listener="#{RelatorioEqCtrl.manterValorLocalidade()}" update="@form"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <h:panelGrid columns="5">
+                                <p:selectOneRadio value="#{RelatorioEqCtrl.periodoRelatorio}">
+                                    <f:selectItem itemLabel="Geral" itemValue="GERAL"/>
+                                    <f:selectItem itemLabel="Intervalo de Tempo" itemValue="INTERVALO"/>
+                                    <p:ajax listener="#{RelatorioEqCtrl.inserirPeriodoRelatorio()}" update="@form"/>
+                                </p:selectOneRadio>
+                                <p:calendar locale="pt_BR" value="#{RelatorioEqCtrl.paramPeriodo}" rendered="#{RelatorioEqCtrl.exibeIntervalo}">
+                                    <p:ajax event="dateSelect" listener="#{RelatorioEqCtrl.manterValorPeriodo()}" update="@form"/>
+                                </p:calendar>
+                                <p:outputLabel value="à" rendered="#{RelatorioEqCtrl.exibeIntervalo}"/>
+                                <p:calendar locale="pt_BR" value="#{RelatorioEqCtrl.paramPeriodoIntervalo}" rendered="#{RelatorioEqCtrl.exibeIntervalo}">
+                                    <p:ajax event="dateSelect" listener="#{RelatorioEqCtrl.manterValorIntervalo()}" update="@form"/>
+                                </p:calendar>
+                                <p:panel style="background-color: beige; border: 1px solid #ffcc66; font-size: 10px; width: 250px" rendered="#{RelatorioEqCtrl.exibeIntervalo}">
+                                    <p:outputLabel value="Caso queira um mês específico, insira o 1º dia do mês e o último dia." style="color: gray"/><br/>
+                                    <p:outputLabel value="Caso queira um ano específico, insira o 1º dia do ano e o último dia." style="color: gray"/>
+                                </p:panel>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="8">
+                                <p:outputLabel value="Tipo: " rendered="#{RelatorioEqCtrl.tipoEquipamento}"/>
+                                <p:selectOneMenu value="#{RelatorioEqCtrl.paramTipoEquipamento}" filter="true" filterMatchMode="startsWith" rendered="#{RelatorioEqCtrl.tipoEquipamento}">
+                                    <f:selectItem itemLabel="SELECIONE TIPO EQUIPAMENTO" itemValue="0"/>
+                                    <f:selectItems value="#{TipoEquipamentoCtrl.tipoEquipamentos}" var="te" itemLabel="#{te.descricao}" itemValue="#{te.id}"/>
+                                    <p:ajax listener="#{RelatorioEqCtrl.manterValorTipoEquipamento()}" update="@form"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Marca: " rendered="#{RelatorioEqCtrl.marca}"/>
+                                <p:selectOneMenu value="#{RelatorioEqCtrl.paramMarca}" filter="true" filterMatchMode="startsWith" rendered="#{RelatorioEqCtrl.marca}">
+                                    <f:selectItem itemLabel="SELECIONE MARCA" itemValue="0"/>
+                                    <f:selectItems value="#{MarcaCtrl.marcas}" var="marcas" itemLabel="#{marcas.descricao}" itemValue="#{marcas.id}"/>
+                                    <p:ajax listener="#{RelatorioEqCtrl.manterValorMarca()}" update="@form"/>
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Ativo " rendered="#{RelatorioEqCtrl.ativo}"/>
+                                <p:selectBooleanCheckbox rendered="#{RelatorioEqCtrl.ativo}" value="#{RelatorioEqCtrl.ativo}" disabled="true"/>
+                                <p:outputLabel value="Inativo: " rendered="#{RelatorioEqCtrl.inativo}"/>
+                                <p:selectBooleanCheckbox rendered="#{RelatorioEqCtrl.inativo}" value="#{RelatorioEqCtrl.inativo}" disabled="true"/>
+                            </h:panelGrid>
+                   
+                        </h:column>
+                    </h:panelGrid>
+                    <center>
+                        <p:commandButton value="Relatório" 
+                                         rendered="#{RelatorioEqCtrl.paramLocalidade != 0 and RelatorioEqCtrl.periodoRelatorio ne ''}"
+                                         actionListener="#{RelatorioEqCtrl.gerarRelatorioAnaliseEquipamento(e)}" ajax="false"/>
+                    </center>
+                </p:panel>
+
+                <!-- SS por Equipe/Serviço Executado -->
+
+                <p:panel id="pnl_historico_equipamento" style="margin-left: 160px; height: 205px" visible="#{RelatorioEqCtrl.pnl_historico_equipamento}">
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Equipamento: "/>
+                        <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{RelatorioEqCtrl.paramEquipamento}">
+                            <f:selectItem itemLabel="SELECIONE EQUIPAMENTO" itemValue="0"/>
+                            <f:selectItems value="#{EquipamentoCtrl.equipamentos}" var="equipamento" 
+                                           itemLabel="#{equipamento.id} - #{equipamento.descricao}" itemValue="#{equipamento.id}"/>
+                            <p:ajax listener="#{RelatorioEqCtrl.manterValorParamEquipamento()}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:panelGrid columns="5">
+                        <p:selectOneRadio value="#{RelatorioEqCtrl.periodoHE}">
+                            <f:selectItem itemLabel="Geral" itemValue="GERAL"/>
+                            <f:selectItem itemLabel="Intervalo de Tempo" itemValue="INTERVALO"/>
+                            <p:ajax listener="#{RelatorioEqCtrl.inserirPeriodoHE()}" update="@form"/>
+                        </p:selectOneRadio>
+                        <p:calendar locale="pt_BR" value="#{RelatorioEqCtrl.paramPeriodoHE}" style="width: 50px"
+                                    rendered="#{RelatorioEqCtrl.exibeIntervaloHE}">
+                            <p:ajax event="dateSelect" listener="#{RelatorioEqCtrl.manterValorPeriodoHE()}" update="@form"/>
+                        </p:calendar>
+                        <p:outputLabel value="à" rendered="#{RelatorioEqCtrl.exibeIntervaloHE}"/>
+                        <p:calendar locale="pt_BR" value="#{RelatorioEqCtrl.paramPeriodoIntervaloHE}" style="width: 50px !important"
+                                    rendered="#{RelatorioEqCtrl.exibeIntervaloHE}">
+                            <p:ajax event="dateSelect" listener="#{RelatorioEqCtrl.manterValorIntervaloHE()}" update="@form"/>
+                        </p:calendar>
+                        <p:panel style="background-color: beige; border: 1px solid #ffcc66; font-size: 10px; width: 250px" rendered="#{RelatorioEqCtrl.exibeIntervaloHE}">
+                            <p:outputLabel value="Caso queira um mês específico, insira o 1º dia do mês e o último dia." style="color: gray"/><br/>
+                            <p:outputLabel value="Caso queira um ano específico, insira o 1º dia do ano e o último dia." style="color: gray"/>
+                        </p:panel>
+                    </h:panelGrid>
+
+                    <br/>
+                    <br/>
+                    <center>
+                        <p:commandButton rendered="#{RelatorioEqCtrl.paramEquipamento != 0 and RelatorioEqCtrl.periodoHE ne ''}"
+                            value="Relatório" action="#{RelatorioEqCtrl.gerarHistoricoEquipamento()}" ajax="false"/>
+                    </center>
+                </p:panel>
+
+            </p:panel>
+        </h:form>
+
+    </p:dialog>
+
+</html>
+

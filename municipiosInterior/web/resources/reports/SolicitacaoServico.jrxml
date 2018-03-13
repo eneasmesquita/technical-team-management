@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SolicitacaoServico" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="74a2d2c0-a799-48d7-9547-7c9113750e72">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="box3" mode="Opaque" backcolor="#F0F0F0">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.3"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="box4" mode="Opaque">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.3"/>
+			<bottomPen lineWidth="0.3"/>
+			<rightPen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="bt" mode="Transparent" backcolor="#F0F0F0">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.3"/>
+			<bottomPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<style name="bl">
+		<box>
+			<leftPen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="blr">
+		<box>
+			<leftPen lineWidth="0.3"/>
+			<rightPen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="btb" mode="Opaque" backcolor="#F0F0F0">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="btlr" mode="Opaque" backcolor="#F0F0F0">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.3"/>
+			<rightPen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="blrb">
+		<box>
+			<leftPen lineWidth="0.3"/>
+			<bottomPen lineWidth="0.3"/>
+			<rightPen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="bBox">
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+			<pen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="bBox2">
+		<box>
+			<pen lineWidth="0.3"/>
+		</box>
+	</style>
+	<style name="bBottom">
+		<box>
+			<bottomPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="bLeft">
+		<box>
+			<leftPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="bTop">
+		<box topPadding="1" bottomPadding="1">
+			<topPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="linhas">
+		<box>
+			<topPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.25"/>
+		</box>
+	</style>
+	<style name="linha2">
+		<box>
+			<bottomPen lineWidth="0.25"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) == 0)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0F0F0"/>
+		</conditionalStyle>
+	</style>
+	<style name="pageFooter">
+		<box topPadding="5">
+			<topPen lineWidth="2.0"/>
+		</box>
+	</style>
+	<style name="bBottom2">
+		<box>
+			<bottomPen lineWidth="0.5" lineStyle="Dashed"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{COLUMN_COUNT}.intValue() >= $P{qtdRegistros}.intValue())]]></conditionExpression>
+			<style backcolor="#FFFFFF" fill="Solid" isBlankWhenNull="false" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+			</style>
+		</conditionalStyle>
+	</style>
+	<style name="header" mode="Opaque" backcolor="#F0F0F0">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<topPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="bTop2" backcolor="#F0F0F0">
+		<box>
+			<topPen lineWidth="0.75"/>
+		</box>
+	</style>
+	<subDataset name="dataset1" uuid="bfa65e6c-1733-429a-b115-9645b38889e0">
+		<parameter name="numSS" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT s.descricao_servico FROM interior.servico s, interior.servico_ss ss, interior.solicitacao_servico solser WHERE s.id = ss.servico AND solser.id = ss.solicitacao_servico AND solser.id = $P!{numSS}]]>
+		</queryString>
+		<field name="descricao_servico" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="logoCaer" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./logoCaer.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logoRR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["./logoRR.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numSS" class="java.lang.Long"/>
+	<parameter name="prioridade" class="java.lang.String"/>
+	<parameter name="situacao" class="java.lang.String"/>
+	<parameter name="dataAbertura" class="java.util.Date"/>
+	<parameter name="dataEncerramento" class="java.util.Date"/>
+	<parameter name="responsavelSS" class="java.lang.String"/>
+	<parameter name="observacoes" class="java.lang.String"/>
+	<parameter name="encerrada" class="java.lang.Boolean"/>
+	<parameter name="parecerTecnico" class="java.lang.String"/>
+	<parameter name="localAberturaSS" class="java.lang.String"/>
+	<parameter name="equipe" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT e.id, e.descricao, e.tombamento, te.descricao AS tipo_equipamento, m.descricao AS marca, lo.descricao AS local_operacao, lot.descricao AS local_operacao_tecnica,
+li.descricao AS local_instalacao, eqss.defeito, eqss.observacao FROM interior.equipamento e, interior.equipamento_ss eqss, interior.solicitacao_servico ss,
+       interior.tipo_equipamento te, interior.local_operacao lo, interior.local_operacao_tecnica lot, interior.local_instalacao li, interior.marca m
+WHERE
+      eqss.equipamento = e.id AND
+      ss.id = eqss.solicitacao_servico AND
+      te.id = e.tipo_equipamento AND
+      m.id = e.marca AND
+      lo.id = e.local_operacao AND
+      lot.id = e.local_operacao_tecnica AND
+      li.id = e.local_instalacao AND
+      ss.id = $P!{numSS}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long"/>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="tombamento" class="java.lang.String"/>
+	<field name="tipo_equipamento" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="local_operacao" class="java.lang.String"/>
+	<field name="local_operacao_tecnica" class="java.lang.String"/>
+	<field name="local_instalacao" class="java.lang.String"/>
+	<field name="defeito" class="java.lang.String"/>
+	<field name="observacao" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="89" splitType="Stretch">
+			<frame>
+				<reportElement uuid="d57ba1ec-038b-4d95-b654-b555bce712ac" style="bBox2" x="0" y="0" width="132" height="78"/>
+				<image>
+					<reportElement uuid="1972814d-cf75-40b7-a65f-a8af733ded9a" x="36" y="2" width="58" height="50"/>
+					<imageExpression><![CDATA[$P{logoCaer}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement uuid="316ff1e4-d63c-4ef3-9107-839d17591c1c" x="11" y="53" width="110" height="15"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="6" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[COMPANHIA DE ÁGUAS E ESGOTOS DE RORAIMA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="d55d3e4b-6a74-49c4-9272-5f62a4d549d0" x="0" y="69" width="132" height="8"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="5" isBold="true"/>
+					</textElement>
+					<text><![CDATA["AMAZÔNIA: PATRIMÔNIO DOS BRASILEIROS"]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement uuid="caa578fc-3f52-4057-827e-6a05a7f4a653" style="bBox" x="132" y="0" width="599" height="78"/>
+				<staticText>
+					<reportElement uuid="22bc1758-af03-4205-90db-5a389dfa77a8" x="152" y="56" width="206" height="20"/>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[SOLICITAÇÃO DE SERVIÇO Nº]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="a5a8306b-a354-4d6c-9599-d98feea74309" x="123" y="10" width="330" height="15"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[COMPANHIA DE ÁGUAS E ESGOTOS DE RORAIMA]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="22bc1758-af03-4205-90db-5a389dfa77a8" x="11" y="30" width="577" height="20"/>
+					<textElement textAlignment="Center">
+						<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[SISTEMA DE MONITORAMENTO DE SOLICITAÇÕES DE SERVIÇO E DE EQUIPAMENTOS DO INTERIOR]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="f6ffbf18-ea87-478a-b823-f76373216419" x="360" y="56" width="100" height="20"/>
+					<textElement>
+						<font fontName="Arial" size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{numSS}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement uuid="2920cbe1-0087-4b3d-a6d7-606b1aa583bd" style="bBox" x="731" y="0" width="70" height="55"/>
+				<textField pattern="dd/MM/yyyy">
+					<reportElement uuid="c1a9b869-a907-4269-bb1b-4975bd9b1351" x="11" y="30" width="48" height="13"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement uuid="0f5c90ac-2c04-469f-9d88-62673d0353ff" style="bBox" x="731" y="55" width="70" height="23"/>
+				<textField>
+					<reportElement uuid="94bdf58b-4093-4d4a-b8ad-89f241a9b3f0" x="1" y="2" width="45" height="12"/>
+					<textElement textAlignment="Right">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement uuid="fb30d571-ce1b-4ce5-824c-a428622ebb97" x="47" y="2" width="19" height="12"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="77" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="525" y="25" width="65" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVAÇÕES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="245" y="12" width="59" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ENCERRADA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="134" y="0" width="85" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA FECHAMENTO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="472" y="0" width="53" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRIORIDADE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="273" y="0" width="45" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SITUAÇÃO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="5" y="0" width="77" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA ABERTURA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="341" y="12" width="41" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EQUIPE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="567" y="0" width="95" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCAL ABERTURA SS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="0" y="67" width="799" height="10" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EQUIPAMENTO(S):]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="226" y="24" width="84" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PARECER TÉCNICO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="fae1b328-0f19-4b2e-bfa5-34a01598909b" x="82" y="1" width="52" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataAbertura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="488cf93a-1532-460f-aa56-92716b102913" x="219" y="1" width="55" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($P{dataEncerramento} == null) ? "---" : $P{dataEncerramento})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5f06fcab-6257-4f88-aea3-7956add12b89" x="318" y="0" width="155" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{situacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ec08167d-b67b-46f3-af22-364ea406774b" x="82" y="13" width="163" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{responsavelSS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9762c415-2b87-4b56-bb98-32308125ccd2" x="590" y="25" width="211" height="27"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{observacoes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="26d6da2f-4df7-44f9-839e-3a74ab5d347c" x="305" y="13" width="37" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($P{encerrada}.equals(true)) ? "SIM" : "NÃO")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="78778832-a871-46fc-a4f0-69fd5985308f" x="661" y="0" width="141" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{localAberturaSS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="5" y="12" width="77" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSÁVEL SS:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="20c68764-10b0-40d0-b66e-b45d78b41014" x="525" y="1" width="43" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{prioridade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2d7ebf73-948e-4e7c-b809-a29b6d361542" x="310" y="24" width="215" height="28"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parecerTecnico}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bc6c81f1-96f9-45a6-b7eb-9e94abaa1363" x="382" y="13" width="196" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{equipe} == null) ? "---" : $P{equipe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="5" y="24" width="50" height="12" backcolor="#CCCCCC"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SERVIÇO(S):]]></text>
+			</staticText>
+			<frame>
+				<reportElement uuid="61a135d5-4e25-4a3c-91bb-4b8c7c99d01b" x="55" y="25" width="171" height="42"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+			</frame>
+			<componentElement>
+				<reportElement uuid="280eedd2-e799-4d12-bb91-ffc83fb93c65" x="57" y="27" width="167" height="8"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1" uuid="952d398e-4ee9-417f-b283-439e20f80989">
+						<datasetParameter name="numSS">
+							<datasetParameterExpression><![CDATA[$P{numSS}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="8" width="167">
+						<textField>
+							<reportElement uuid="0d2b1fce-b204-4eb9-8b08-bea8c9c2d462" x="0" y="0" width="165" height="8"/>
+							<textElement>
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{descricao_servico}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="58" splitType="Stretch">
+			<frame>
+				<reportElement uuid="be493db3-29f4-4a63-8b2e-1be2a06e5e88" style="linhas" mode="Opaque" x="0" y="0" width="799" height="14" backcolor="#CCCCFF"/>
+			</frame>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="0" y="26" width="218" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEFEITO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" mode="Opaque" x="218" y="26" width="186" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVAÇÕES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="245" y="2" width="106" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="359" y="3" width="43" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MARCA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="438" y="3" width="72" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCAL OPERAÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="554" y="3" width="101" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCAL OPERAÇÃO TÉCNICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="747" y="2" width="52" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOMBAMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="3" y="3" width="22" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="33" y="3" width="207" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIÇÃO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="635eddd1-dadd-47f1-aa59-064d3b94f70b" x="660" y="3" width="78" height="12" backcolor="#CCCCFF"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LOCAL INSTALAÇÃO]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1b7f2beb-037a-439e-8b23-af69c65d127d" x="0" y="15" width="25" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fe1d85ab-48d1-4f76-8a02-c7414c00e9b3" x="25" y="15" width="215" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4b6ca696-a6ca-4130-846c-0cf03860a28b" x="240" y="15" width="117" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_equipamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b40e5ae8-4449-4647-aac5-efe4c12c9120" x="357" y="16" width="80" height="9"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3d762ca8-7c45-4bb3-be60-978117eb6716" x="437" y="15" width="120" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{local_operacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a62aec95-33fa-40f4-aa11-83471771acdd" x="556" y="15" width="105" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{local_operacao_tecnica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4b29ab0f-e673-4697-8e88-0674df8cd5cf" x="660" y="15" width="87" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{local_instalacao}.equals("DEFAULT")) ? "---" : $F{local_instalacao})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6d21347a-b71c-4468-863c-a14c0f8eeb52" x="746" y="14" width="54" height="12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tombamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3befd058-efe5-4884-864a-0f37930d2ded" x="-1" y="37" width="219" height="21"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{defeito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09918c37-6c65-42ac-a1d9-8a2405f0f5c8" x="218" y="37" width="186" height="21"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="59" splitType="Stretch">
+			<frame>
+				<reportElement uuid="554af190-cab1-4ae3-af67-03da41497ded" style="pageFooter" x="0" y="0" width="801" height="54"/>
+				<image>
+					<reportElement uuid="80c2cd1c-f635-4e88-b2b4-f385bb73f6f8" x="0" y="2" width="120" height="47"/>
+					<imageExpression><![CDATA[$P{logoRR}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement uuid="18b1feb7-c38b-4898-9033-a8d2bbc29dba" x="222" y="0" width="100" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA[Visão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8c5784ec-ffea-48ac-a631-6cc90e7835c7" x="222" y="10" width="202" height="35"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<text><![CDATA[Ser modelo de gestão em saneamento, auto-sustentável, integrada e comprometida com a sociedade, meio ambiente, oferecendo um serviço diferenciado e reconhecido pelos clientes.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="ba806ef0-2ba4-48ed-800e-b7c8540aa161" x="445" y="0" width="100" height="10"/>
+					<textElement>
+						<font fontName="Arial" size="8" isBold="true" isItalic="true" pdfFontName="Helvetica-Oblique"/>
+					</textElement>
+					<text><![CDATA[Missão]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="74520048-9f4a-498a-b2ec-9a9605acd61c" x="445" y="10" width="202" height="35"/>
+					<textElement textAlignment="Justified">
+						<font fontName="Arial" size="7"/>
+					</textElement>
+					<text><![CDATA[Prestar adequadamente os serviços de abastecimento de água e esgotamento sanitário, com equilíbrio econômico financeiro, universalizando o atendimento, contribuindo para melhoria da qualidade de vida e da saúde da população.]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="64">
+			<staticText>
+				<reportElement uuid="f9d74eca-00de-41cc-b959-217d44d69a21" x="0" y="11" width="204" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SOLICITANTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9d74eca-00de-41cc-b959-217d44d69a21" x="0" y="34" width="204" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[___________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9d74eca-00de-41cc-b959-217d44d69a21" x="310" y="34" width="204" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[___________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9d74eca-00de-41cc-b959-217d44d69a21" x="310" y="11" width="204" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[AUTORIZAÇÃO - CAPITAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9d74eca-00de-41cc-b959-217d44d69a21" x="578" y="34" width="204" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[___________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9d74eca-00de-41cc-b959-217d44d69a21" x="578" y="11" width="204" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RESPONSÁVEL EQUIPE]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="5ecb4266-da72-4cdd-be4a-75dc25e389f1" x="3" y="0" width="796" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>MunicipiosInterior</title>
+            <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/resources/images/favicon.ico" type="image/x-icon" />
+            <link type="text/css" rel="stylesheet" href="../resources/css/estilo_levantamentoInterior.css"/>
+            <h:outputScript library="js" name="jquery-1.7.2.min.js" target="head"/>
+            <h:outputScript library="js" name="javascript.js" target="head"/>
+            <h:outputScript library="js" name="primeFacesLocale-pt_BR.js"/>
+            <!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>-->
+            <style type="text/css">
+                .ui-dialog {
+                    background: #e7e7e7;
+                }
+
+                .ui-growl {
+                    top: 100px !important;
+                }
+                .ui-growl-item-container {
+                    background-color: #ffcc66 !important;
+                }
+
+                .ui-datatable .ui-datatable-data .even-row td{
+                    background-color: #eff3f7;
+                }
+
+                .ui-datatable .ui-datatable-data .odd-row td{
+                    background-color:white;
+                }
+
+                .ui-datatable .ui-column-filter{
+                    width:60px !important;
+                    text-transform: uppercase !important;
+                }
+
+                .ui-dialog{
+                    top: 25px !important;
+                }
+            </style>
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+            <meta http-equiv="Pragma" content="no-cache"/>
+            <meta http-equiv="Expires" content="0"/>
+        </h:head>
+
+        <h:body style="font-size: 12px">
+
+            <div class="div_principal">
+                
+                <!--
+                <div class="div_header">
+    
+                    <p:graphicImage name="logoCaer.png" library="images" 
+                                    style="margin-left: 30px; margin-bottom: 15px; margin-top: 10px" 
+                                    height="140" width="160"/>
+    
+                    <div class="div_titulo">
+                        <abbr>Levantamento de Equipamentos</abbr><br/>
+                        <abbr>e Solicitações de Serviços</abbr>
+                    </div>
+    
+                    <abbr class="abbr">
+                        Municípios do Interior
+                    </abbr>
+                </div>
+                
+                <br/>
+                -->
+            </div>
+
+            <center>
+                <p:panel id="pnlEquipamentos" rendered="true" style="height: 200px; width: 1050px">
+
+                    <p:growl id="growl_admin" life="10000"/>
+
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <h:panelGrid columns="6">
+                                <p:outputLabel value="Usuário: "/>
+                                <p:outputLabel value="#{sessionScope.nome}" style="text-transform: uppercase"/>
+                                <p:outputLabel value="Local: "/>
+                                <p:outputLabel value="#{sessionScope.setor}" style="text-transform: uppercase"/>
+                                <p:spacer width="10"/>
+                                <p:commandButton icon="ui-icon-power" title="Sair" action="#{LoginController.logoutApp()}"/>
+                            </h:panelGrid>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br/>
+
+                    <h:form id="form_links_equipamento" prependId="false">
+
+                        <p:commandLink onclick="wgtvar_dlgTipoEquipamento.show();" action="#{TipoEquipamentoCtrl.preparaInsercao()}" 
+                                       update=":form_tipoEquipamento">
+                            <h:graphicImage id="giPipeTipo" name="pipe_128.png" 
+                                            library="images" style="margin-left: 60px" height="85" width="85"/>
+                        </p:commandLink>
+
+                        <p:commandLink onclick="wgtvar_dlgMarcas.show();" action="#{MarcaCtrl.preparaInsercao()}" 
+                                       update=":form_marcas">
+                            <h:graphicImage id="giPipeMarca" name="pipe_128.png" 
+                                            library="images" style="margin-left: 100px" height="85" width="85"/>
+                        </p:commandLink>
+
+                        <p:commandLink onclick="wgtvar_dlgServico.show();" action="#{ServicoCtrl.preparaInsercao()}" update=":form_servico">
+                            <h:graphicImage id="giTool_service" name="service_128.png" 
+                                            library="images" style="margin-left: 100px" height="72" width="72"/>
+                        </p:commandLink>
+
+                        <p:commandLink onclick="wgtvar_pnlEquipes.show();" action="#{EquipeCtrl.limpar()}" 
+                                       update=":form_equipesJoin :form_dtEquipesJoin :form_equipesAdd :form_dtEquipesAdd">
+                            <h:graphicImage id="giWorkers" name="workers_128.png" 
+                                            library="images" style="margin-left: 80px" height="72" width="72"/>
+                        </p:commandLink>
+
+                        <p:commandLink onclick="wgtvar_dlgPrioridade.show();" action="#{PrioridadeCtrl.preparaInsercao()}" 
+                                       update=":form_prioridade">
+                            <h:graphicImage id="giPrioridade" name="caution.png" 
+                                            library="images" style="margin-left: 80px" height="72" width="72"/>
+                        </p:commandLink>
+
+                        <p:commandLink action="../index.xhtml?faces-redirect=true" ajax="false">
+                            <p:graphicImage id="giArrowEq_back" name="backward_64.png" library="images" style="margin-left: 80px" height="45" width="45"/>
+                        </p:commandLink>
+
+                        <br/>
+
+                        <p:outputLabel value="TIPOS" style="font-weight: bold; color: #0078AE; float: left; margin-left: 120px"/>
+                        <p:outputLabel value="MARCAS" style="font-weight: bold; color: #0078AE; float: left; margin-left: 140px"/>
+                        <p:outputLabel value="SERVIÇOS" style="font-weight: bold; color: #0078AE; float: left; margin-left: 110px"/>
+                        <p:outputLabel value="EQUIPES" style="font-weight: bold; color: #0078AE; float: left; margin-left: 100px"/>
+                        <p:outputLabel value="PRIORIDADES" style="font-weight: bold; color: #0078AE; float: left; margin-left: 80px"/>
+
+
+                    </h:form>
+
+                </p:panel>
+            </center>
+
+            <ui:include id="inc_staff" src="staff.xhtml"/>
+            <ui:include id="inc_staff" src="marcas.xhtml"/>
+            <ui:include id="inc_servico" src="servico.xhtml"/>
+            <ui:include id="inc_staff" src="prioridades.xhtml"/>
+            <ui:include id="inc_staff" src="tipoEquipamento.xhtml"/>
+
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+
+            <div id="bottom">
+                <h:panelGroup layout="block" id="bottom-conteudo">
+                    <h:panelGroup layout="block" id="endereco-caer">
+                        <h3>Gerência de Tecnologia da Informação - GTI</h3>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>
+        </h:body>    
+    </f:view>
+
+</html>
+

@@ -1,0 +1,135 @@
+/* 
+    Document   : estilo_levantamentoInterior
+    Created on : 22/10/2013, 10:16:45
+    Author     : eneas
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+#bottom {
+    
+    font-family:Arial, sans-serif;
+    
+    border-top: 1px solid #a8a8a8;
+    color: #777;
+    text-align: center;
+    font-size: 90%;
+    padding: 5px;
+}
+
+body{
+
+    /*
+    COMENTADO PARA NÃO INFLUENCIAR NEGATIVAMENTE NOS COMPONENTES DO PRIMEFACES DECLARADOS
+    APÓS O DIV COM CLASSE 'div_principal'
+    
+    height: 100%;
+    */
+
+    background-color: #DEEDF7;
+}
+
+.div_principal{
+
+    width: 960px;
+
+    /*height: 100%;*/
+
+    margin: 0 auto;
+
+}
+
+.div_header{
+
+    border: 3px solid #ffffff;
+
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;   
+
+    background: rgb(197,222,234); /* Old browsers */
+    background: -moz-linear-gradient(left, rgba(197,222,234,1) 23%, rgba(138,187,215,1) 37%, rgba(6,109,171,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(23%,rgba(197,222,234,1)), color-stop(37%,rgba(138,187,215,1)), color-stop(100%,rgba(6,109,171,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c5deea', endColorstr='#066dab',GradientType=1 ); /* IE6-9 */
+}
+
+.div_login{
+    
+    border-radius: 4px 4px 4px 4px; 
+    border: 1px solid #DEEDF7;
+    margin-top: 10%;
+    margin-left: 30%; 
+    margin-right: 30%;
+    
+    background: rgb(197,222,234); /* Old browsers */
+    background: -moz-linear-gradient(left, rgba(197,222,234,1) 23%, rgba(138,187,215,1) 37%, rgba(6,109,171,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(23%,rgba(197,222,234,1)), color-stop(37%,rgba(138,187,215,1)), color-stop(100%,rgba(6,109,171,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgba(197,222,234,1) 23%,rgba(138,187,215,1) 37%,rgba(6,109,171,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c5deea', endColorstr='#066dab',GradientType=1 ); /* IE6-9 */
+}
+
+@font-face {
+
+    font-family: 'Conv_Monofett';
+    src: url('fonts/Monofett.ttf');
+    src: local('☺'), url('fonts/Monofett.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.div_titulo{
+
+    float: right;
+    margin-right: 70px;
+    margin-top: 25px;
+
+    color: #ffffff;
+
+    font-family: 'Conv_Monofett', Sans-Serif; 
+
+    text-shadow: 4px 4px 4px #003399;
+
+    font-size: 45px; 
+    text-align: justify;
+
+}
+
+.abbr{
+
+    color: #0066cc;
+    font-family: 'Conv_Monofett', Sans-Serif;
+    text-shadow: 1px 1px 1px #ffffff;
+    font-size: 22px;
+    margin-left: 680px;
+}
+
+.abbr_login{
+
+    color: #0066cc;
+    font-family: 'Conv_Monofett', Sans-Serif;
+    text-shadow: 1px 1px 1px #ffffff;
+    font-size: 22px;
+}
+
+.exportar_PDF{
+    background-image: url('resources/images/pdf_export_48.png') !important;
+    background-repeat: no-repeat !important;
+    height: 50px;
+    width: 50px;
+    background: top;
+    border: hidden;
+}
+
+

@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <p:dialog header="Alteração  de dados da Solicitação de Serviço" id="dlgDelSs" widgetVar="wgtvar_dlgDelSs" resizable="false" modal="true">
+
+            <h:form id="form_del_ss_search" prependId="false">
+
+                <h:panelGrid columns="3">
+                    
+                    <p:outputLabel value="Solicitação de Serviço Nº: " style="font-size: 20px; color: #ff6666"/>
+                    <p:inputText value="#{SolServiceCtrl.param_num_ss}" style="font-size: 22px; color: #ff6666; font-weight: bold; width: 60px"/>
+                    <p:commandButton icon="ui-icon-search" style="height: 40px" actionListener="#{SolServiceCtrl.retornaSolServico(e)}" 
+                                     update=":form_del_ss :form_del_ss:pnlSolServicoDel"/>
+                </h:panelGrid>
+
+            </h:form>
+
+            <h:form id="form_del_ss" prependId="false">
+
+                <p:panel id="pnlSolServicoDel" rendered="#{SolServiceCtrl.exibe_param_ss}" style="background: top">
+
+                    <p:commandButton icon="ui-icon-script" value="Histórico (0)" style="float: right" onclick="wgtvar_dlgHistAltSs.show();"/>
+
+                    <h:panelGrid columns="4">
+                        <p:outputLabel value="Data Abertura: "/>
+                        <p:calendar pattern="dd/MM/yyyy" value="#{SolServiceCtrl.solser.data_abertura_ss}"/>
+
+                        <p:outputLabel value="Data Fechamento: "/>
+                        <p:calendar pattern="dd/MM/yyyy" value="#{SolServiceCtrl.solser.data_fechamento_ss}"/>
+
+                        <p:outputLabel value="Prioridade: "/>
+                        <p:selectOneMenu value="#{SolServiceCtrl.solser.prioridade}">
+                            <f:selectItem itemLabel="SELECIONE PRIORIDADE" itemValue=" "/>
+                            <f:selectItem itemLabel="BAIXA" itemValue="BAIXA"/>
+                            <f:selectItem itemLabel="NORMAL" itemValue="NORMAL"/>
+                            <f:selectItem itemLabel="URGENTE" itemValue="URGENTE"/>
+                            <f:selectItem itemLabel="EMERGENCIAL" itemValue="EMERGENCIAL"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Situação: "/>
+                        <p:selectOneMenu value="#{SolServiceCtrl.solser.situacao_ss}">
+                            <f:selectItem itemLabel="SELECIONE SITUAÇÃO" itemValue=" "/>
+                            <f:selectItem itemLabel="AGUARDANDO PARECER TÉCNICO" itemValue="AGUARDANDO PARECER TÉCNICO"/>
+                            <f:selectItem itemLabel="AGUARDANDO FORNECIMENTO DE EQUIPAMENTO" itemValue="AGUARDANDO FORNECIMENTO DE EQUIPAMENTO"/>
+                            <f:selectItem itemLabel="REPARO EM ANDAMENTO" itemValue="REPARO EM ANDAMENTO"/>
+                            <f:selectItem itemLabel="SUBSTITUIÇÃO DE EQUIPAMENTO EM ANDAMENTO" itemValue="SUBSTITUIÇÃO DE EQUIPAMENTO EM ANDAMENTO"/>
+                            <f:selectItem itemLabel="ENCERRADA COM REPARO EFETUADO" itemValue="ENCERRADA COM REPARO EFETUADO"/>
+                            <f:selectItem itemLabel="ENCERRADA SEM REPARO" itemValue="ENCERRADA SEM REPARO"/>
+                            <f:selectItem itemLabel="ENCERRADA COM SUBSTITUIÇÃO EFETUADA" itemValue="ENCERRADA COM SUBSTITUIÇÃO EFETUADA"/>
+                            <f:selectItem itemLabel="ENCERRADA EQUIPAMENTO CONDENADO" itemValue="ENCERRADA EQUIPAMENTO CONDENADO"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Colaborador Responsável Abertura SS: "/>
+                    <p:inputText style="width: 350px"/>
+
+
+                    <br/>
+
+                    <!-- PARTE DO FORMULÁRIO RESERVADA PARA DADOS DO EQUIPAMENTO -->
+
+                    <p:tabView id="tabViewTdel" widgetVar="wgtvar_tabViewT">
+
+                        <p:tab id="tabEqtDel" title="Equipamento">
+
+                            <p:toolbar>
+                                <p:toolbarGroup align="left">
+                                    <p:outputLabel value="Código do Equipamento: "/>
+                                    <p:inputText value="#{SolServiceCtrl.equipment.cod_equipamento}" style="width: 40px">
+                                        <f:convertNumber pattern="0000"/>
+                                    </p:inputText>
+                                    <p:commandButton icon="ui-icon-search" />
+                                </p:toolbarGroup>
+                                <p:toolbarGroup align="right">
+                                    <p:commandButton icon="ui-icon-wrench" value="Equipamento Avulso" style="margin-left: 200px"/>
+                                    <p:commandButton value="Outro Equipamento" icon="ui-icon-plus" disabled="true"/>
+                                </p:toolbarGroup>
+                            </p:toolbar>
+
+                            <!-- ================================================================================================ -->
+
+                            <p:fieldset id="fs_DelEquipment" rendered="true">
+
+                                <h:panelGrid columns="10">
+                                    <p:outputLabel value="Marca: "/>
+                                    <p:inputText value="#{SolServiceCtrl.equipment.marca_equipamento}" style="width: 100px"/>
+                                    <p:outputLabel value="Modelo: "/>
+                                    <p:inputText value="#{SolServiceCtrl.equipment.modelo_equipamento}"/>
+                                    <p:outputLabel value="Potência: "/>
+                                    <p:inputText value="#{SolServiceCtrl.equipment.potencia_equipamento}" style="width: 25px;">
+                                        <f:convertNumber pattern="000"/>
+                                    </p:inputText>
+
+                                    <p:outputLabel value="Descrição: "/>
+                                    <p:inputText value="#{SolServiceCtrl.equipment.descricao_equipamento}" style="width: 330px"/>
+                                    <p:outputLabel value="Nº Tombamento: "/>
+                                    <p:inputText value="#{SolServiceCtrl.equipment.tombamento_equipamento}" style="width: 40px">
+                                        <f:convertNumber pattern="0000"/>
+                                    </p:inputText>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="4">
+                                    <p:outputLabel value="Local de Operação: "/>
+                                    <p:selectOneMenu value="#{SolServiceCtrl.equipment.local_operacao}">
+                                        <f:selectItem itemLabel="SELECIONE LOCAL DE OPERAÇÃO" 
+                                                      itemValue=" "/>
+                                        <f:selectItem itemLabel="CAPTAÇÃO" 
+                                                      itemValue="CAPTAÇÃO"/>
+                                        <f:selectItem itemLabel="ESTAÇÃO DE TRATAMENTO DE ÁGUA" 
+                                                      itemValue="ESTAÇÃO DE TRATAMENTO DE ÁGUA"/>
+                                        <f:selectItem itemLabel="ESTAÇÃO ELEVATÓRIA DE ÁGUA 
+                                                      TRATADA" itemValue="ESTAÇÃO ELEVATÓRIA DE ÁGUA TRATADA"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Local de Operação Técnica: "/>
+                                    <p:selectOneMenu value="#{SolServiceCtrl.equipment.local_operacao_tecnica}">
+                                        <f:selectItem itemLabel="SELECIONE LOCAL 
+                                                      DE OPERAÇÃO TÉCNICA" itemValue=""/>
+                                        <f:selectItem itemLabel="Captação" 
+                                                      itemValue=""/>
+                                        <f:selectItem itemLabel="SUPERFICIAL" 
+                                                      itemValue="SUPERFICIAL"/>
+                                        <f:selectItem itemLabel="SUBTERRÂNEO" 
+                                                      itemValue="SUBTERRÂNEO"/>
+                                        <f:selectItem itemLabel="MISTO" 
+                                                      itemValue="MISTO"/>
+                                        <f:selectItem itemLabel="Estação de 
+                                                      Tratamento de Água" itemValue=""/>
+                                        <f:selectItem itemLabel="TRANSFORMADOR" 
+                                                      itemValue="TRANSFORMADOR"/>
+                                        <f:selectItem itemLabel="MISTURADOR DE 
+                                                      CAL" itemValue="MISTURADOR DE CAL"/>
+                                        <f:selectItem itemLabel="DOSADORA DE 
+                                                      CLORO" itemValue="DOSADORA DE CLORO"/>
+                                        <f:selectItem itemLabel="LIMPEZA DOS 
+                                                      FILTROS" itemValue="LIMPEZA DOS FILTROS"/>
+                                        <f:selectItem itemLabel="PEÇAS E 
+                                                      CONEXÕES" itemValue="PEÇAS E CONEXÕES"/>
+                                        <f:selectItem itemLabel="Estação 
+                                                      Elevatória de Água Tratada" itemValue=""/>
+                                        <f:selectItem itemLabel="EEAT" 
+                                                      itemValue="EEAT"/>
+                                        <f:selectItem itemLabel="AUTOMAÇÃO" 
+                                                      itemValue="AUTOMAÇÃO"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="Município: "/>
+                                    <p:selectOneMenu value="#{SolServiceCtrl.equipment.municipio_equipamento}">
+                                        <f:selectItem itemLabel="SELECIONE O MUNICÍPIO" 
+                                                      itemValue=""/>
+                                        <f:selectItem itemLabel="ALTO ALEGRE" itemValue="ALTO 
+                                                      ALEGRE"/>
+                                        <f:selectItem itemLabel="AMAJARI" itemValue="AMAJARI"/>
+                                        <f:selectItem itemLabel="BONFIM" itemValue="BONFIM"/>
+                                        <f:selectItem itemLabel="CANTÁ" itemValue="CANTÁ"/>
+                                        <f:selectItem itemLabel="CARACARAÍ" 
+                                                      itemValue="CARACARAÍ"/>
+                                        <f:selectItem itemLabel="CAROEBE" itemValue="CAROEBE"/>
+                                        <f:selectItem itemLabel="IRACEMA" itemValue="IRACEMA"/>
+                                        <f:selectItem itemLabel="MUCAJAÍ" itemValue="MUCAJAÍ"/>
+                                        <f:selectItem itemLabel="NORMANDIA" 
+                                                      itemValue="NORMANDIA"/>
+                                        <f:selectItem itemLabel="PACARAIMA" 
+                                                      itemValue="PACARAIMA"/>
+                                        <f:selectItem itemLabel="RORAINÓPOLIS" 
+                                                      itemValue="RORAINÓPOLIS"/>
+                                        <f:selectItem itemLabel="SÃO LUÍS DO ANAUÁ" 
+                                                      itemValue="SÃO LUÍS DO ANAUÁ"/>
+                                        <f:selectItem itemLabel="SÃO JÕAO DA BALIZA" 
+                                                      itemValue="SÃO JÕAO DA BALIZA"/>
+                                        <f:selectItem itemLabel="UIRAMUTÃ" 
+                                                      itemValue="UIRAMUTÃ"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                                <h:panelGrid columns="4">
+                                    <p:outputLabel value="Defeito Informado: "/>
+                                    <p:inputTextarea value="#{SolServiceCtrl.solser.defeito_equipamento_ss}" style="width: 200px;"/>
+                                    <p:outputLabel value="Observações: "/>
+                                    <p:inputTextarea value="#{SolServiceCtrl.solser.observacoes_ss}" style="width: 200px;"/>
+
+                                </h:panelGrid>
+                            </p:fieldset>
+
+                            <p:dataTable rendered="true" emptyMessage="Não foi adicionado mais equipamentos à SS.">
+                                <p:column/>
+                                <p:column headerText="Cód. Equipamento"/>
+                                <p:column headerText="Defeito Informado"/>
+                                <p:column headerText="Observações"/>
+                                <p:column headerText="Parecer Técnico"/>
+                            </p:dataTable>
+
+                        </p:tab>
+
+                        <p:tab id="tabTecSerDel" title="Técnico/Serviço">
+                            
+                            
+                            
+
+                            <h:panelGrid columns="8">
+                                <p:selectBooleanCheckbox/>
+                                <p:outputLabel value="Técnico: "/>
+                                <p:selectOneMenu>
+                                    <f:selectItem itemLabel="SELECIONE TÉCNICO/COLABORADOR" itemValue=""/>
+                                </p:selectOneMenu>
+                                <p:selectBooleanCheckbox/>
+                                <p:outputLabel value="Equipe: "/>
+                                <p:selectOneMenu>
+                                    <f:selectItem itemLabel="SELECIONE TÉCNICO/COLABORADOR" itemValue=""/>
+                                </p:selectOneMenu>
+                                <p:commandButton icon="ui-icon-plusthick"/>
+                                <p:inputTextarea style="width: 250px"/>
+                            </h:panelGrid>
+                            
+                            <h:panelGrid columns="4">
+                                <p:outputLabel value="Serviços: "/>
+                                <p:selectOneMenu>
+                                    <f:selectItem itemLabel="SELECIONE SERVIÇO" itemValue=" "/>
+                                    <f:selectItems value="#{servicoCtrl.servico}" var="s" itemLabel="#{s.descricao_servico}" itemValue="#{s.descricao_servico}"/>
+                                </p:selectOneMenu>
+                                <p:commandButton icon="ui-icon-plusthick"/>
+                                <p:inputTextarea style="width: 400px"/>
+                            </h:panelGrid>
+                            
+                            
+                            
+                            
+
+                        </p:tab>
+
+                        <p:tab id="tabParTecDel" title="Parecer Técnico">
+
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Parecer Técnico: "/>
+                                <p:inputTextarea value="#{SolServiceCtrl.solser.parecer_tecnico_ss}" style="width: 700px; height: 200px" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                    </p:tabView>
+                    <br/>
+
+                    <center>
+                        <p:commandButton icon="ui-icon-check" value="Excluir SS"/>
+                        <p:commandButton icon="ui-icon-close" value="Cancelar"/>
+                    </center>
+
+                </p:panel>
+            </h:form>
+        </p:dialog>
+
+</html>
+
