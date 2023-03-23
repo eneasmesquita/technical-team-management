@@ -12,7 +12,6 @@ Source code of an application for technical team management. The application man
 **Technologies**
 
 * Java
-* JSF - PrimeFaces
-* NetBeans
+* PrimeFaces
 * PostgreSQL
 * Glassfish
